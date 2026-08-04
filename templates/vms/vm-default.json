@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "template_id": "vm-default",
+  "instance_type": "virtual-machine",
+  "source": {
+    "kind": "image-or-disk",
+    "reference": null,
+    "exact_reference_required": true
+  },
+  "project": "sezu",
+  "profiles": [],
+  "root_storage_pool": "sezu-btrfs",
+  "network": "sezu-br0",
+  "firmware": "uefi",
+  "cloud_init": {
+    "user_data": null,
+    "vendor_data": null,
+    "network_config": null
+  },
+  "disks": [],
+  "custom_volumes": [],
+  "devices": [],
+  "start": false,
+  "console": {
+    "serial": true,
+    "vga": true
+  },
+  "agent": {
+    "expected": true
+  }
+}

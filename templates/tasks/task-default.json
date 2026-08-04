@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "template_id": "task-default",
+  "instance_type": "container",
+  "source": {
+    "kind": "image",
+    "reference": "sezu-u-golden-0.1.0",
+    "exact_reference_required": true
+  },
+  "project": "sezu",
+  "profiles": [
+    "sezu-u-power"
+  ],
+  "network": "sezu-br0",
+  "storage_pool": "sezu-btrfs",
+  "persistent_volumes": [],
+  "workspace_import": {
+    "mode": "caller-selected",
+    "source": null,
+    "destination": "/work"
+  },
+  "operation": {
+    "command": null,
+    "working_directory": "/work",
+    "environment_names": []
+  },
+  "outputs": {
+    "paths": [],
+    "promotion": "caller-selected-work-or-artifact"
+  },
+  "lifecycle": {
+    "delete_requested": false,
+    "delete_attached_volumes": false
+  }
+}

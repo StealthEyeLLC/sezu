@@ -1,0 +1,10 @@
+network:
+  version: 2
+  ethernets:
+    ens3:
+      addresses:
+        - 2604:2dc0:121:3e2::1/128
+      routes:
+        - to: "::/0"
+          via: 2604:2dc0:121::1
+          on-link: true
