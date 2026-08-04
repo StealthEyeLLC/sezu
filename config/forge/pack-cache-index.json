@@ -1,0 +1,2253 @@
+{
+  "base_packs": [
+    "sezu-core",
+    "data-core",
+    "document-core",
+    "wasm-core",
+    "network-core",
+    "machine-image-core",
+    "cross-build-core"
+  ],
+  "on_demand_packs": [
+    "language-bun",
+    "language-deno",
+    "language-dotnet",
+    "language-php",
+    "language-kotlin",
+    "language-julia",
+    "language-r",
+    "language-elixir-erlang",
+    "language-lua",
+    "language-dart",
+    "language-powershell",
+    "language-swift",
+    "language-fortran",
+    "language-haskell",
+    "language-ocaml",
+    "language-scala",
+    "language-clojure",
+    "data-spark",
+    "cad-3d",
+    "binary-firmware",
+    "cloud-aws",
+    "cloud-azure",
+    "cloud-gcp",
+    "cloud-cloudflare",
+    "storage-extra"
+  ],
+  "packs": {
+    "binary-firmware": {
+      "components": [
+        {
+          "component": "ghidra",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=ghidra",
+          "version": "12.1.2"
+        },
+        {
+          "component": "radare2",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=radare2",
+          "version": "6.1.8"
+        },
+        {
+          "component": "binwalk",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=binwalk",
+          "version": "3.1.0"
+        },
+        {
+          "component": "volatility3",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=volatility3",
+          "version": "2.28.0"
+        },
+        {
+          "component": "capstone",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=capstone",
+          "version": "5.0.6"
+        },
+        {
+          "component": "keystone-engine",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=keystone-engine",
+          "version": "0.9.2"
+        },
+        {
+          "component": "unicorn",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=unicorn",
+          "version": "2.1.4"
+        },
+        {
+          "component": "angr",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=angr",
+          "version": "9.3.1.post1"
+        },
+        {
+          "component": "rr",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=rr;architecture=amd64",
+          "version": "5.7.0-2ubuntu0.24.04.1"
+        },
+        {
+          "component": "gdb",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gdb;architecture=amd64",
+          "version": "15.1-1ubuntu1~24.04.1"
+        },
+        {
+          "component": "gdb-multiarch",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gdb-multiarch;architecture=amd64",
+          "version": "15.1-1ubuntu1~24.04.1"
+        },
+        {
+          "component": "libguestfs-tools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libguestfs-tools;architecture=amd64",
+          "version": "1:1.52.0-5ubuntu3"
+        },
+        {
+          "component": "sleuthkit",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=sleuthkit;architecture=amd64",
+          "version": "4.12.1+dfsg-1.1ubuntu2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "cad-3d": {
+      "components": [
+        {
+          "component": "openscad",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=openscad;architecture=amd64",
+          "version": "2021.01-6build4"
+        },
+        {
+          "component": "blender",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=blender;architecture=amd64",
+          "version": "4.0.2+dfsg-1ubuntu8"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "cloud-aws": {
+      "components": [
+        {
+          "component": "aws-cli",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=aws-cli",
+          "version": "2.36.15"
+        },
+        {
+          "component": "aws-session-manager-plugin",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=aws-session-manager-plugin",
+          "version": "1.2.707.0"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "cloud-azure": {
+      "components": [
+        {
+          "component": "azure-cli",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=azure-cli",
+          "version": "2.89.0-1~noble"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "cloud-cloudflare": {
+      "components": [
+        {
+          "component": "wrangler",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/wrangler",
+          "version": "4.118.0"
+        },
+        {
+          "component": "nodejs",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=nodejs",
+          "version": "24.19.0"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "cloud-gcp": {
+      "components": [
+        {
+          "component": "google-cloud-cli",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=google-cloud-cli",
+          "version": "579.0.0"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "cross-build-core": {
+      "components": [
+        {
+          "component": "gcc-arm-linux-gnueabihf",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gcc-arm-linux-gnueabihf;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "g++-arm-linux-gnueabihf",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=g++-arm-linux-gnueabihf;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "gcc-aarch64-linux-gnu",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gcc-aarch64-linux-gnu;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "g++-aarch64-linux-gnu",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=g++-aarch64-linux-gnu;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "gcc-riscv64-linux-gnu",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gcc-riscv64-linux-gnu;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "g++-riscv64-linux-gnu",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=g++-riscv64-linux-gnu;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "musl-tools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=musl-tools;architecture=amd64",
+          "version": "1.2.4-2"
+        },
+        {
+          "component": "mingw-w64",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=mingw-w64;architecture=all",
+          "version": "11.0.1-3build1"
+        },
+        {
+          "component": "qemu-user-static",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=qemu-user-static;architecture=amd64",
+          "version": "1:8.2.2+ds-0ubuntu1.17"
+        },
+        {
+          "component": "binfmt-support",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=binfmt-support;architecture=amd64",
+          "version": "2.2.2-7"
+        },
+        {
+          "component": "skopeo",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=skopeo;architecture=amd64",
+          "version": "1.13.3+ds1-2ubuntu0.24.04.3"
+        },
+        {
+          "component": "cmake",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cmake;architecture=amd64",
+          "version": "3.28.3-1build7"
+        },
+        {
+          "component": "vcpkg",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=vcpkg",
+          "version": "2026.07.29"
+        },
+        {
+          "component": "conan",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=conan",
+          "version": "2.31.1"
+        },
+        {
+          "component": "bazel",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=bazel",
+          "version": "9.2.0"
+        },
+        {
+          "component": "linux-headers-generic",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=linux-headers-generic;architecture=amd64",
+          "version": "6.8.0-137.137"
+        },
+        {
+          "component": "initramfs-tools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=initramfs-tools;architecture=all",
+          "version": "0.142ubuntu25.8"
+        },
+        {
+          "component": "xorriso",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=xorriso;architecture=amd64",
+          "version": "1:1.5.6-1.1ubuntu3"
+        }
+      ],
+      "placement": "base"
+    },
+    "data-core": {
+      "components": [
+        {
+          "component": "jupyterlab",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=jupyterlab",
+          "version": "4.6.2"
+        },
+        {
+          "component": "ipykernel",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=ipykernel",
+          "version": "7.3.0"
+        },
+        {
+          "component": "jupyter-server-proxy",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=jupyter-server-proxy",
+          "version": "4.5.0"
+        },
+        {
+          "component": "nbconvert",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=nbconvert",
+          "version": "7.17.1"
+        },
+        {
+          "component": "numpy",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=numpy",
+          "version": "2.5.1"
+        },
+        {
+          "component": "scipy",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=scipy",
+          "version": "1.18.0"
+        },
+        {
+          "component": "pandas",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=pandas",
+          "version": "3.0.5"
+        },
+        {
+          "component": "polars",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=polars",
+          "version": "1.43.2"
+        },
+        {
+          "component": "scikit-learn",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=scikit-learn",
+          "version": "1.9.0"
+        },
+        {
+          "component": "pyarrow",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=pyarrow",
+          "version": "25.0.0"
+        },
+        {
+          "component": "duckdb",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=duckdb",
+          "version": "1.5.5"
+        },
+        {
+          "component": "opencv-python-headless",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=opencv-python-headless",
+          "version": "5.0.0.93"
+        },
+        {
+          "component": "dbt-core",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=dbt-core",
+          "version": "1.12.0"
+        },
+        {
+          "component": "dask",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=dask",
+          "version": "2026.7.1"
+        },
+        {
+          "component": "distributed",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=distributed",
+          "version": "2026.7.1"
+        },
+        {
+          "component": "gdal-bin",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gdal-bin;architecture=amd64",
+          "version": "3.8.4+dfsg-3ubuntu3"
+        },
+        {
+          "component": "libgdal-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libgdal-dev;architecture=amd64",
+          "version": "3.8.4+dfsg-3ubuntu3"
+        },
+        {
+          "component": "libopencv-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libopencv-dev;architecture=amd64",
+          "version": "4.6.0+dfsg-13.1ubuntu1"
+        },
+        {
+          "component": "libopenblas-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libopenblas-dev;architecture=amd64",
+          "version": "0.3.26+ds-1ubuntu0.1"
+        },
+        {
+          "component": "liblapack-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=liblapack-dev;architecture=amd64",
+          "version": "3.12.0-3build1.1"
+        },
+        {
+          "component": "gfortran",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gfortran;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        }
+      ],
+      "placement": "base"
+    },
+    "data-spark": {
+      "components": [
+        {
+          "component": "apache-spark",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=apache-spark",
+          "version": "4.2.0"
+        },
+        {
+          "component": "pyspark",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=pyspark",
+          "version": "4.2.0"
+        },
+        {
+          "component": "default-jdk",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=default-jdk;architecture=amd64",
+          "version": "2:1.21-75+exp1"
+        },
+        {
+          "component": "jupyterlab",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=jupyterlab",
+          "version": "4.6.2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "document-core": {
+      "components": [
+        {
+          "component": "tesseract-ocr",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=tesseract-ocr;architecture=amd64",
+          "version": "5.3.4-1build5"
+        },
+        {
+          "component": "tesseract-ocr-eng",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=tesseract-ocr-eng;architecture=all",
+          "version": "1:4.1.0-2"
+        },
+        {
+          "component": "tesseract-ocr-osd",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=tesseract-ocr-osd;architecture=all",
+          "version": "1:4.1.0-2"
+        },
+        {
+          "component": "ocrmypdf",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=ocrmypdf",
+          "version": "17.8.1"
+        },
+        {
+          "component": "qpdf",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=qpdf;architecture=amd64",
+          "version": "11.9.0-1.1ubuntu0.1"
+        },
+        {
+          "component": "ghostscript",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ghostscript;architecture=amd64",
+          "version": "10.02.1~dfsg1-0ubuntu7.8"
+        },
+        {
+          "component": "poppler-utils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=poppler-utils;architecture=amd64",
+          "version": "24.02.0-1ubuntu9.9"
+        },
+        {
+          "component": "pandoc",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=pandoc;architecture=amd64",
+          "version": "3.1.3+ds-2"
+        },
+        {
+          "component": "libreoffice",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libreoffice;architecture=amd64",
+          "version": "4:24.2.7-0ubuntu0.24.04.6"
+        },
+        {
+          "component": "typst",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=typst",
+          "version": "0.15.1"
+        },
+        {
+          "component": "texlive-latex-base",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=texlive-latex-base;architecture=all",
+          "version": "2023.20240207-1"
+        },
+        {
+          "component": "texlive-latex-recommended",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=texlive-latex-recommended;architecture=all",
+          "version": "2023.20240207-1"
+        },
+        {
+          "component": "texlive-fonts-recommended",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=texlive-fonts-recommended;architecture=all",
+          "version": "2023.20240207-1"
+        },
+        {
+          "component": "inkscape",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=inkscape;architecture=amd64",
+          "version": "1.2.2-2ubuntu12"
+        },
+        {
+          "component": "@mermaid-js/mermaid-cli",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/@mermaid-js/mermaid-cli",
+          "version": "11.16.0"
+        },
+        {
+          "component": "plantuml",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=plantuml;architecture=all",
+          "version": "1:1.2020.2+ds-3ubuntu1.1"
+        },
+        {
+          "component": "graphviz",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=graphviz;architecture=amd64",
+          "version": "2.42.2-9ubuntu0.1"
+        },
+        {
+          "component": "libimage-exiftool-perl",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libimage-exiftool-perl;architecture=all",
+          "version": "12.76+dfsg-1"
+        },
+        {
+          "component": "sox",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=sox;architecture=amd64",
+          "version": "14.4.2+git20190427-4build4"
+        },
+        {
+          "component": "yt-dlp",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=yt-dlp;architecture=all",
+          "version": "2024.04.09-1"
+        },
+        {
+          "component": "ffmpeg",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ffmpeg;architecture=amd64",
+          "version": "7:6.1.1-3ubuntu5"
+        },
+        {
+          "component": "imagemagick",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=imagemagick;architecture=amd64",
+          "version": "8:6.9.12.98+dfsg1-5.2build2"
+        }
+      ],
+      "placement": "base"
+    },
+    "language-bun": {
+      "components": [
+        {
+          "component": "bun",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=bun",
+          "version": "1.3.14"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-clojure": {
+      "components": [
+        {
+          "component": "clojure",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=clojure;architecture=all",
+          "version": "1.11.1-2"
+        },
+        {
+          "component": "leiningen",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=leiningen;architecture=all",
+          "version": "2.10.0-2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-dart": {
+      "components": [
+        {
+          "component": "dart-sdk",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=dart-sdk",
+          "version": "3.12.2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-deno": {
+      "components": [
+        {
+          "component": "deno",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=deno",
+          "version": "2.9.4"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-dotnet": {
+      "components": [
+        {
+          "component": "dotnet-sdk",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=dotnet-sdk",
+          "version": "10.0.302"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-elixir-erlang": {
+      "components": [
+        {
+          "component": "erlang",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=erlang;architecture=all",
+          "version": "1:25.3.2.8+dfsg-1ubuntu4.6"
+        },
+        {
+          "component": "elixir",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=elixir;architecture=amd64",
+          "version": "1.14.0.dfsg-2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-fortran": {
+      "components": [
+        {
+          "component": "gfortran",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gfortran;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "cmake",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cmake;architecture=amd64",
+          "version": "3.28.3-1build7"
+        },
+        {
+          "component": "meson",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=meson;architecture=all",
+          "version": "1.3.2-1ubuntu1"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-haskell": {
+      "components": [
+        {
+          "component": "ghc",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ghc;architecture=amd64",
+          "version": "9.4.7-3"
+        },
+        {
+          "component": "cabal-install",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cabal-install;architecture=amd64",
+          "version": "3.8.1.0-1"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-julia": {
+      "components": [
+        {
+          "component": "julia",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=julia",
+          "version": "1.12.6"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-kotlin": {
+      "components": [
+        {
+          "component": "kotlin-compiler",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=kotlin-compiler",
+          "version": "2.4.10"
+        },
+        {
+          "component": "default-jdk",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=default-jdk;architecture=amd64",
+          "version": "2:1.21-75+exp1"
+        },
+        {
+          "component": "gradle",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gradle;architecture=all",
+          "version": "4.4.1-20"
+        },
+        {
+          "component": "maven",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=maven;architecture=all",
+          "version": "3.8.7-2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-lua": {
+      "components": [
+        {
+          "component": "lua5.4",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=lua5.4;architecture=amd64",
+          "version": "5.4.6-3build2"
+        },
+        {
+          "component": "luajit",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=luajit;architecture=amd64",
+          "version": "2.1.0+git20231223.c525bcb+dfsg-1ubuntu0.1"
+        },
+        {
+          "component": "luarocks",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=luarocks;architecture=all",
+          "version": "3.8.0+dfsg1-1"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-ocaml": {
+      "components": [
+        {
+          "component": "ocaml",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ocaml;architecture=amd64",
+          "version": "4.14.1-1ubuntu1"
+        },
+        {
+          "component": "opam",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=opam;architecture=amd64",
+          "version": "2.1.5-1"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-php": {
+      "components": [
+        {
+          "component": "php",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "php-cli",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php-cli;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "php-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php-dev;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "php-xml",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php-xml;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "php-curl",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php-curl;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "php-mbstring",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php-mbstring;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "php-zip",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php-zip;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "php-sqlite3",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=php-sqlite3;architecture=all",
+          "version": "2:8.3+93ubuntu2"
+        },
+        {
+          "component": "composer",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=composer;architecture=all",
+          "version": "2.7.1-2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-powershell": {
+      "components": [
+        {
+          "component": "powershell",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=powershell",
+          "version": "7.6.4"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-r": {
+      "components": [
+        {
+          "component": "r-base",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=r-base;architecture=all",
+          "version": "4.3.3-2build2"
+        },
+        {
+          "component": "r-base-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=r-base-dev;architecture=all",
+          "version": "4.3.3-2build2"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-scala": {
+      "components": [
+        {
+          "component": "scala",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=scala;architecture=all",
+          "version": "2.11.12-5"
+        },
+        {
+          "component": "maven",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=maven;architecture=all",
+          "version": "3.8.7-2"
+        },
+        {
+          "component": "gradle",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gradle;architecture=all",
+          "version": "4.4.1-20"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "language-swift": {
+      "components": [
+        {
+          "component": "swift",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=swift",
+          "version": "6.2.3"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "machine-image-core": {
+      "components": [
+        {
+          "component": "packer",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=packer",
+          "version": "1.16.0"
+        },
+        {
+          "component": "qemu-system-x86",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=qemu-system-x86;architecture=amd64",
+          "version": "1:8.2.2+ds-0ubuntu1.17"
+        },
+        {
+          "component": "qemu-utils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=qemu-utils;architecture=amd64",
+          "version": "1:8.2.2+ds-0ubuntu1.17"
+        },
+        {
+          "component": "debootstrap",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=debootstrap;architecture=all",
+          "version": "1.0.134ubuntu1"
+        },
+        {
+          "component": "mmdebstrap",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=mmdebstrap;architecture=all",
+          "version": "1.4.3-6"
+        },
+        {
+          "component": "cloud-image-utils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cloud-image-utils;architecture=all",
+          "version": "0.33-1"
+        },
+        {
+          "component": "cloud-init",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cloud-init;architecture=all",
+          "version": "26.1-0ubuntu1~24.04.1"
+        },
+        {
+          "component": "skopeo",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=skopeo;architecture=amd64",
+          "version": "1.13.3+ds1-2ubuntu0.24.04.3"
+        },
+        {
+          "component": "umoci",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=umoci;architecture=amd64",
+          "version": "0.4.7+ds-4ubuntu0.24.04.3"
+        },
+        {
+          "component": "squashfs-tools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=squashfs-tools;architecture=amd64",
+          "version": "1:4.6.1-1build1"
+        },
+        {
+          "component": "genisoimage",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=genisoimage;architecture=amd64",
+          "version": "9:1.1.11-3.5"
+        },
+        {
+          "component": "xorriso",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=xorriso;architecture=amd64",
+          "version": "1:1.5.6-1.1ubuntu3"
+        },
+        {
+          "component": "isolinux",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=isolinux;architecture=all",
+          "version": "3:6.04~git20190206.bf6db5b4+dfsg1-3ubuntu3"
+        },
+        {
+          "component": "syslinux-common",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=syslinux-common;architecture=all",
+          "version": "3:6.04~git20190206.bf6db5b4+dfsg1-3ubuntu3"
+        },
+        {
+          "component": "grub-pc-bin",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=grub-pc-bin;architecture=amd64",
+          "version": "2.12-1ubuntu7.3"
+        },
+        {
+          "component": "grub-efi-amd64-bin",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=grub-efi-amd64-bin;architecture=amd64",
+          "version": "2.12-1ubuntu7.3"
+        },
+        {
+          "component": "mtools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=mtools;architecture=amd64",
+          "version": "4.0.43-1build1"
+        },
+        {
+          "component": "dosfstools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=dosfstools;architecture=amd64",
+          "version": "4.2-1.1build1"
+        },
+        {
+          "component": "parted",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=parted;architecture=amd64",
+          "version": "3.6-4build1"
+        },
+        {
+          "component": "gdisk",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gdisk;architecture=amd64",
+          "version": "1.0.10-1build1"
+        },
+        {
+          "component": "kpartx",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=kpartx;architecture=amd64",
+          "version": "0.9.4-5ubuntu8.2"
+        },
+        {
+          "component": "libguestfs-tools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libguestfs-tools;architecture=amd64",
+          "version": "1:1.52.0-5ubuntu3"
+        },
+        {
+          "component": "guestfish",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=guestfish;architecture=amd64",
+          "version": "1:1.52.0-5ubuntu3"
+        }
+      ],
+      "placement": "base"
+    },
+    "network-core": {
+      "components": [
+        {
+          "component": "mitmproxy",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=mitmproxy",
+          "version": "12.2.3"
+        },
+        {
+          "component": "tshark",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=tshark;architecture=amd64",
+          "version": "4.2.2-1.1build3"
+        },
+        {
+          "component": "wireshark-common",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=wireshark-common;architecture=amd64",
+          "version": "4.2.2-1.1build3"
+        },
+        {
+          "component": "scapy",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=scapy",
+          "version": "2.7.0"
+        },
+        {
+          "component": "httpie",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=httpie",
+          "version": "3.2.4"
+        },
+        {
+          "component": "curl",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=curl;architecture=amd64",
+          "version": "8.5.0-2ubuntu10.11"
+        },
+        {
+          "component": "grpcurl",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=grpcurl",
+          "version": "1.9.3"
+        },
+        {
+          "component": "websocat",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=websocat",
+          "version": "1.14.1"
+        },
+        {
+          "component": "iperf3",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=iperf3;architecture=amd64",
+          "version": "3.16-1build2"
+        },
+        {
+          "component": "mosquitto-clients",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=mosquitto-clients;architecture=amd64",
+          "version": "2.0.18-1build3"
+        },
+        {
+          "component": "paho-mqtt",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=paho-mqtt",
+          "version": "2.1.0"
+        },
+        {
+          "component": "pika",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=pika",
+          "version": "1.4.2"
+        },
+        {
+          "component": "nats-cli",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=nats-cli",
+          "version": "0.4.0"
+        },
+        {
+          "component": "nats-py",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=nats-py",
+          "version": "2.15.0"
+        },
+        {
+          "component": "tcpdump",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=tcpdump;architecture=amd64",
+          "version": "4.99.4-3ubuntu4.24.04.1"
+        },
+        {
+          "component": "iproute2",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=iproute2;architecture=amd64",
+          "version": "6.1.0-1ubuntu6.4"
+        },
+        {
+          "component": "iptables",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=iptables;architecture=amd64",
+          "version": "1.8.10-3ubuntu2"
+        },
+        {
+          "component": "nftables",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=nftables;architecture=amd64",
+          "version": "1.0.9-1ubuntu0.1"
+        },
+        {
+          "component": "wireguard-tools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=wireguard-tools;architecture=amd64",
+          "version": "1.0.20210914-1ubuntu4"
+        },
+        {
+          "component": "openssh-client",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=openssh-client;architecture=amd64",
+          "version": "1:9.6p1-3ubuntu13.18"
+        },
+        {
+          "component": "socat",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=socat;architecture=amd64",
+          "version": "1.8.0.0-4ubuntu0.1"
+        },
+        {
+          "component": "netcat-openbsd",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=netcat-openbsd;architecture=amd64",
+          "version": "1.226-1ubuntu2"
+        },
+        {
+          "component": "nmap",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=nmap;architecture=amd64",
+          "version": "7.94+git20230807.3be01efb1+dfsg-3build2"
+        },
+        {
+          "component": "dnsutils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=dnsutils;architecture=all",
+          "version": "1:9.18.39-0ubuntu0.24.04.5"
+        },
+        {
+          "component": "ethtool",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ethtool;architecture=amd64",
+          "version": "1:6.7-1build1"
+        }
+      ],
+      "placement": "base"
+    },
+    "sezu-core": {
+      "components": [
+        {
+          "component": "bash",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=bash;architecture=amd64",
+          "version": "5.2.21-2ubuntu4"
+        },
+        {
+          "component": "coreutils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=coreutils;architecture=amd64",
+          "version": "9.4-3ubuntu6.2"
+        },
+        {
+          "component": "findutils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=findutils;architecture=amd64",
+          "version": "4.9.0-5build1"
+        },
+        {
+          "component": "grep",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=grep;architecture=amd64",
+          "version": "3.11-4build1"
+        },
+        {
+          "component": "sed",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=sed;architecture=amd64",
+          "version": "4.9-2ubuntu0.24.04.1"
+        },
+        {
+          "component": "gawk",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gawk;architecture=amd64",
+          "version": "1:5.2.1-2ubuntu0.1"
+        },
+        {
+          "component": "util-linux",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=util-linux;architecture=amd64",
+          "version": "2.39.3-9ubuntu6.5"
+        },
+        {
+          "component": "procps",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=procps;architecture=amd64",
+          "version": "2:4.0.4-4ubuntu3.2"
+        },
+        {
+          "component": "file",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=file;architecture=amd64",
+          "version": "1:5.45-3build1"
+        },
+        {
+          "component": "ca-certificates",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ca-certificates;architecture=all",
+          "version": "20260601~24.04.1"
+        },
+        {
+          "component": "curl",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=curl;architecture=amd64",
+          "version": "8.5.0-2ubuntu10.11"
+        },
+        {
+          "component": "wget",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=wget;architecture=amd64",
+          "version": "1.21.4-1ubuntu4.4"
+        },
+        {
+          "component": "jq",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=jq;architecture=amd64",
+          "version": "1.7.1-3ubuntu0.24.04.2"
+        },
+        {
+          "component": "openssh-client",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=openssh-client;architecture=amd64",
+          "version": "1:9.6p1-3ubuntu13.18"
+        },
+        {
+          "component": "git",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=git;architecture=amd64",
+          "version": "1:2.43.0-1ubuntu7.3"
+        },
+        {
+          "component": "git-lfs",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=git-lfs;architecture=amd64",
+          "version": "3.4.1-1ubuntu0.4"
+        },
+        {
+          "component": "subversion",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=subversion;architecture=amd64",
+          "version": "1.14.3-1build4"
+        },
+        {
+          "component": "mercurial",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=mercurial;architecture=amd64",
+          "version": "6.7.2-1ubuntu2.2"
+        },
+        {
+          "component": "rsync",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=rsync;architecture=amd64",
+          "version": "3.2.7-1ubuntu1.5"
+        },
+        {
+          "component": "rclone",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=rclone;architecture=amd64",
+          "version": "1.60.1+dfsg-3ubuntu0.24.04.6"
+        },
+        {
+          "component": "aria2",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=aria2;architecture=amd64",
+          "version": "1.37.0+debian-1build3"
+        },
+        {
+          "component": "lftp",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=lftp;architecture=amd64",
+          "version": "4.9.2-2ubuntu1.1"
+        },
+        {
+          "component": "pv",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=pv;architecture=amd64",
+          "version": "1.8.5-2build1"
+        },
+        {
+          "component": "tar",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=tar;architecture=amd64",
+          "version": "1.35+dfsg-3ubuntu0.4"
+        },
+        {
+          "component": "gzip",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gzip;architecture=amd64",
+          "version": "1.12-1ubuntu3.2"
+        },
+        {
+          "component": "bzip2",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=bzip2;architecture=amd64",
+          "version": "1.0.8-5.1build0.1"
+        },
+        {
+          "component": "xz-utils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=xz-utils;architecture=amd64",
+          "version": "5.6.1+really5.4.5-1ubuntu0.3"
+        },
+        {
+          "component": "zstd",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=zstd;architecture=amd64",
+          "version": "1.5.5+dfsg2-2build1.1"
+        },
+        {
+          "component": "zip",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=zip;architecture=amd64",
+          "version": "3.0-13ubuntu0.2"
+        },
+        {
+          "component": "unzip",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=unzip;architecture=amd64",
+          "version": "6.0-28ubuntu4.1"
+        },
+        {
+          "component": "p7zip-full",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=p7zip-full;architecture=all",
+          "version": "16.02+transitional.1"
+        },
+        {
+          "component": "cpio",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cpio;architecture=amd64",
+          "version": "2.15+dfsg-1ubuntu2"
+        },
+        {
+          "component": "squashfs-tools",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=squashfs-tools;architecture=amd64",
+          "version": "1:4.6.1-1build1"
+        },
+        {
+          "component": "build-essential",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=build-essential;architecture=amd64",
+          "version": "12.10ubuntu1"
+        },
+        {
+          "component": "gcc",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gcc;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "g++",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=g++;architecture=amd64",
+          "version": "4:13.2.0-7ubuntu1"
+        },
+        {
+          "component": "clang",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=clang;architecture=amd64",
+          "version": "1:18.0-59~exp2"
+        },
+        {
+          "component": "llvm",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=llvm;architecture=amd64",
+          "version": "1:18.0-59~exp2"
+        },
+        {
+          "component": "lld",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=lld;architecture=amd64",
+          "version": "1:18.0-59~exp2"
+        },
+        {
+          "component": "make",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=make;architecture=amd64",
+          "version": "4.3-4.1build2"
+        },
+        {
+          "component": "cmake",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cmake;architecture=amd64",
+          "version": "3.28.3-1build7"
+        },
+        {
+          "component": "ninja-build",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ninja-build;architecture=amd64",
+          "version": "1.11.1-2"
+        },
+        {
+          "component": "meson",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=meson;architecture=all",
+          "version": "1.3.2-1ubuntu1"
+        },
+        {
+          "component": "autoconf",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=autoconf;architecture=all",
+          "version": "2.71-3"
+        },
+        {
+          "component": "automake",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=automake;architecture=all",
+          "version": "1:1.16.5-1.3ubuntu1"
+        },
+        {
+          "component": "libtool",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libtool;architecture=all",
+          "version": "2.4.7-7build1"
+        },
+        {
+          "component": "pkg-config",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=pkg-config;architecture=amd64",
+          "version": "1.8.1-2build1"
+        },
+        {
+          "component": "ccache",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ccache;architecture=amd64",
+          "version": "4.9.1-1"
+        },
+        {
+          "component": "gdb",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gdb;architecture=amd64",
+          "version": "15.1-1ubuntu1~24.04.1"
+        },
+        {
+          "component": "strace",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=strace;architecture=amd64",
+          "version": "6.8-0ubuntu2"
+        },
+        {
+          "component": "valgrind",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=valgrind;architecture=amd64",
+          "version": "1:3.22.0-0ubuntu3"
+        },
+        {
+          "component": "python3",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=python3;architecture=amd64",
+          "version": "3.12.3-0ubuntu2.1"
+        },
+        {
+          "component": "python3-venv",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=python3-venv;architecture=amd64",
+          "version": "3.12.3-0ubuntu2.1"
+        },
+        {
+          "component": "python3-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=python3-dev;architecture=amd64",
+          "version": "3.12.3-0ubuntu2.1"
+        },
+        {
+          "component": "golang-go",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=golang-go;architecture=amd64",
+          "version": "2:1.22~2build1"
+        },
+        {
+          "component": "rustc",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=rustc;architecture=amd64",
+          "version": "1.75.0+dfsg0ubuntu1-0ubuntu7.4"
+        },
+        {
+          "component": "cargo",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cargo;architecture=amd64",
+          "version": "1.75.0+dfsg0ubuntu1-0ubuntu7.4"
+        },
+        {
+          "component": "default-jdk",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=default-jdk;architecture=amd64",
+          "version": "2:1.21-75+exp1"
+        },
+        {
+          "component": "maven",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=maven;architecture=all",
+          "version": "3.8.7-2"
+        },
+        {
+          "component": "gradle",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gradle;architecture=all",
+          "version": "4.4.1-20"
+        },
+        {
+          "component": "docker.io",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=docker.io;architecture=amd64",
+          "version": "29.1.3-0ubuntu3~24.04.2"
+        },
+        {
+          "component": "docker-buildx",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=docker-buildx;architecture=amd64",
+          "version": "0.30.1-0ubuntu1~24.04.1"
+        },
+        {
+          "component": "docker-compose-v2",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=docker-compose-v2;architecture=amd64",
+          "version": "2.40.3+ds1-0ubuntu1~24.04.1"
+        },
+        {
+          "component": "containerd",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=containerd;architecture=amd64",
+          "version": "2.2.1-0ubuntu1~24.04.3"
+        },
+        {
+          "component": "runc",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=runc;architecture=amd64",
+          "version": "1.3.4-0ubuntu1~24.04.1"
+        },
+        {
+          "component": "podman",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=podman;architecture=amd64",
+          "version": "4.9.3+ds1-1ubuntu0.2"
+        },
+        {
+          "component": "buildah",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=buildah;architecture=amd64",
+          "version": "1.33.7+ds1-1ubuntu0.24.04.3"
+        },
+        {
+          "component": "skopeo",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=skopeo;architecture=amd64",
+          "version": "1.13.3+ds1-2ubuntu0.24.04.3"
+        },
+        {
+          "component": "umoci",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=umoci;architecture=amd64",
+          "version": "0.4.7+ds-4ubuntu0.24.04.3"
+        },
+        {
+          "component": "qemu-system-x86",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=qemu-system-x86;architecture=amd64",
+          "version": "1:8.2.2+ds-0ubuntu1.17"
+        },
+        {
+          "component": "qemu-utils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=qemu-utils;architecture=amd64",
+          "version": "1:8.2.2+ds-0ubuntu1.17"
+        },
+        {
+          "component": "qemu-user-static",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=qemu-user-static;architecture=amd64",
+          "version": "1:8.2.2+ds-0ubuntu1.17"
+        },
+        {
+          "component": "binfmt-support",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=binfmt-support;architecture=amd64",
+          "version": "2.2.2-7"
+        },
+        {
+          "component": "libvirt-clients",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libvirt-clients;architecture=amd64",
+          "version": "10.0.0-2ubuntu8.15"
+        },
+        {
+          "component": "virtinst",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=virtinst;architecture=all",
+          "version": "1:4.1.0-3ubuntu0.1"
+        },
+        {
+          "component": "ovmf",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=ovmf;architecture=all",
+          "version": "2024.02-2ubuntu0.9"
+        },
+        {
+          "component": "incus-client",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=incus-client;architecture=amd64",
+          "version": "1:6.0.6-ubuntu24.04-202603272003"
+        },
+        {
+          "component": "nodejs",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=nodejs",
+          "version": "24.19.0"
+        },
+        {
+          "component": "github-cli",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=github-cli",
+          "version": "2.97.0"
+        },
+        {
+          "component": "gitlab-cli",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=gitlab-cli",
+          "version": "1.112.0"
+        },
+        {
+          "component": "opentofu",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=opentofu",
+          "version": "1.12.5"
+        },
+        {
+          "component": "kubectl",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=kubectl",
+          "version": "1.36.3"
+        },
+        {
+          "component": "uv",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=uv",
+          "version": "0.12.1"
+        },
+        {
+          "component": "@modelcontextprotocol/sdk",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/@modelcontextprotocol/sdk",
+          "version": "1.30.0"
+        },
+        {
+          "component": "playwright",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/playwright",
+          "version": "1.62.1"
+        },
+        {
+          "component": "typescript",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/typescript",
+          "version": "7.0.2"
+        },
+        {
+          "component": "tsx",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/tsx",
+          "version": "4.23.5"
+        },
+        {
+          "component": "ajv",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/ajv",
+          "version": "8.20.0"
+        },
+        {
+          "component": "yaml",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/yaml",
+          "version": "2.9.0"
+        },
+        {
+          "component": "commander",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/commander",
+          "version": "15.0.0"
+        },
+        {
+          "component": "execa",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/execa",
+          "version": "10.0.1"
+        },
+        {
+          "component": "ws",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/ws",
+          "version": "8.21.2"
+        },
+        {
+          "component": "uuid",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/uuid",
+          "version": "14.0.1"
+        },
+        {
+          "component": "zod",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/zod",
+          "version": "4.4.3"
+        },
+        {
+          "component": "archiver",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/archiver",
+          "version": "8.0.0"
+        },
+        {
+          "component": "unzipper",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/unzipper",
+          "version": "0.12.5"
+        },
+        {
+          "component": "tar-stream",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/tar-stream",
+          "version": "3.2.0"
+        },
+        {
+          "component": "proper-lockfile",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/proper-lockfile",
+          "version": "4.1.2"
+        },
+        {
+          "component": "chokidar",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/chokidar",
+          "version": "5.0.0"
+        },
+        {
+          "component": "fast-glob",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/fast-glob",
+          "version": "3.3.3"
+        },
+        {
+          "component": "pino",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/pino",
+          "version": "10.3.1"
+        },
+        {
+          "component": "pino-pretty",
+          "ecosystem": "npm",
+          "lock_file": "locks/npm-lock.json",
+          "lock_ref": "node_modules/pino-pretty",
+          "version": "13.1.3"
+        },
+        {
+          "component": "playwright-chromium",
+          "ecosystem": "browser",
+          "lock_file": "locks/playwright-browsers.json",
+          "lock_ref": "browsers[0]",
+          "version": "151.0.7922.34"
+        },
+        {
+          "component": "ubuntu-noble-cloud-image",
+          "ecosystem": "incus-image",
+          "lock_file": "locks/ubuntu-image.json",
+          "lock_ref": "incus_image_fingerprint",
+          "version": "20260803_07:42"
+        }
+      ],
+      "placement": "base"
+    },
+    "storage-extra": {
+      "components": [
+        {
+          "component": "minio-client",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=minio-client",
+          "version": "2025-08-13T08-35-41Z"
+        },
+        {
+          "component": "syncthing",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=syncthing;architecture=amd64",
+          "version": "1.27.2~ds4-1ubuntu0.24.04.3"
+        },
+        {
+          "component": "sshfs",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=sshfs;architecture=amd64",
+          "version": "3.7.3-1.1build3"
+        },
+        {
+          "component": "nfs-common",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=nfs-common;architecture=amd64",
+          "version": "1:2.6.4-3ubuntu5.1"
+        },
+        {
+          "component": "cifs-utils",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=cifs-utils;architecture=amd64",
+          "version": "2:7.0-2ubuntu0.5"
+        },
+        {
+          "component": "age",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=age;architecture=amd64",
+          "version": "1.1.1-1ubuntu0.24.04.3"
+        },
+        {
+          "component": "sops",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=sops",
+          "version": "3.13.3"
+        },
+        {
+          "component": "gocryptfs",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=gocryptfs;architecture=amd64",
+          "version": "2.4.0-1ubuntu0.24.04.3"
+        },
+        {
+          "component": "dvc",
+          "ecosystem": "python",
+          "lock_file": "locks/python-uv.lock",
+          "lock_ref": "package=dvc",
+          "version": "3.67.1"
+        },
+        {
+          "component": "git-annex",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=git-annex;architecture=amd64",
+          "version": "10.20240129-1build1"
+        }
+      ],
+      "placement": "on-demand"
+    },
+    "wasm-core": {
+      "components": [
+        {
+          "component": "wasmtime",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=wasmtime",
+          "version": "47.0.3"
+        },
+        {
+          "component": "wasm-tools",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=wasm-tools",
+          "version": "1.255.0"
+        },
+        {
+          "component": "wit-bindgen",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=wit-bindgen",
+          "version": "0.60.0"
+        },
+        {
+          "component": "binaryen",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=binaryen;architecture=amd64",
+          "version": "108-1"
+        },
+        {
+          "component": "emscripten",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=emscripten;architecture=all",
+          "version": "3.1.6~dfsg-7"
+        },
+        {
+          "component": "wasm-pack",
+          "ecosystem": "direct",
+          "lock_file": "locks/direct-artifacts.tsv",
+          "lock_ref": "component=wasm-pack",
+          "version": "0.15.0"
+        }
+      ],
+      "placement": "base"
+    }
+  },
+  "release": "0.1.0",
+  "schema_version": 1
+}

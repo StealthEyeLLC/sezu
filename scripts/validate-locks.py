@@ -16,6 +16,7 @@ REQUIRED = [
     "apt-host.tsv", "apt-u.tsv", "direct-artifacts.tsv", "npm-lock.json",
     "python-uv.lock", "playwright-browsers.json", "ubuntu-image.json",
     "capability-packs.json", "service-images.json", "licenses.json",
+    "python-linux-amd64-artifacts.json",
 ]
 HEX64 = re.compile(r"^[0-9a-f]{64}$")
 COMMIT = re.compile(r"^[0-9a-f]{40}(?:[0-9a-f]{24})?$")
@@ -137,6 +138,16 @@ def main() -> int:
             h = artifact.get("hash", "")
             if not h.startswith("sha256:") or not HEX64.fullmatch(h.removeprefix("sha256:")):
                 fail(f"Python artifact lacks SHA-256: {p['name']}")
+
+    linux_python = load_json("python-linux-amd64-artifacts.json")
+    if linux_python.get("platform") != "linux-amd64" or not linux_python.get("artifacts"):
+        fail("Linux Python artifact supplement is invalid")
+    for artifact in linux_python["artifacts"]:
+        exact(str(artifact.get("version", "")), f"python-linux:{artifact.get('name')}")
+        if not HEX64.fullmatch(artifact.get("sha256", "")) or not str(artifact.get("size", "")).isdigit():
+            fail(f"invalid Linux Python artifact: {artifact.get('name')}")
+        if not artifact.get("url", "").startswith("https://files.pythonhosted.org/"):
+            fail(f"invalid Linux Python artifact URL: {artifact.get('name')}")
 
     browsers = load_json("playwright-browsers.json")
     if browsers.get("playwright_package_version") != "1.62.1":

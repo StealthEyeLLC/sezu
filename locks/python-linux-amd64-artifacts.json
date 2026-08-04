@@ -1,0 +1,34 @@
+{
+  "artifacts": [
+    {
+      "filename": "pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "name": "pydantic-core",
+      "sha256": "926c9541b14b12b1681dca8a0b75feb510b06c6341b70a8e500c2fdcff837cce",
+      "size": 2094516,
+      "upload_time": "2026-05-06T13:39:10.577024Z",
+      "url": "https://files.pythonhosted.org/packages/5f/97/2aab507d3d00ca626e8e57c1eac6a79e4e5fbcc63eb99733ff55d1717f65/pydantic_core-2.46.4-cp312-cp312-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "version": "2.46.4"
+    },
+    {
+      "filename": "pypdfium2-5.12.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "name": "pypdfium2",
+      "sha256": "e10cbf41b21233ec5e20adfc170cf60edd77abead86a97dc708fff55a8a886c7",
+      "size": 3701734,
+      "upload_time": "2026-07-17T10:01:00.952968Z",
+      "url": "https://files.pythonhosted.org/packages/23/16/21420a6f2bc5f981299c336817dd5d72709dad5fda30ac38cbd5f0f7b372/pypdfium2-5.12.1-py3-none-manylinux_2_17_x86_64.manylinux2014_x86_64.whl",
+      "version": "5.12.1"
+    },
+    {
+      "filename": "uharfbuzz-0.56.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "name": "uharfbuzz",
+      "sha256": "3b4bb4398270bbb8e1005a7a3d56acd5258c5b00484a06633cb30776da9cc3ab",
+      "size": 1949388,
+      "upload_time": "2026-07-31T16:43:32.845703Z",
+      "url": "https://files.pythonhosted.org/packages/0c/8f/6541f3855ed2f592204363091276b0b19a00e6078d1a4ff9bbbdd5970021/uharfbuzz-0.56.0-cp310-abi3-manylinux2014_x86_64.manylinux_2_17_x86_64.manylinux_2_28_x86_64.whl",
+      "version": "0.56.0"
+    }
+  ],
+  "platform": "linux-amd64",
+  "reason": "Exact Linux artifacts omitted by the multi-platform uv resolution for locked OCRmyPDF 17.8.1.",
+  "schema_version": 1
+}
