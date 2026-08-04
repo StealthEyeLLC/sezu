@@ -8,7 +8,7 @@
 **Target platform:** OVH VPS, `amd64`, Ubuntu 24.04 LTS  
 **Specification baseline:** 2026-08-04  
 **Status:** Canonical implementation contract  
-**Supersession:** This document supersedes every earlier SEZU engineering specification, planner, capability proposal, and phase plan.
+**Supersession:** This document supersedes every earlier SEZU engineering specification, planner, capability report, and phase plan.
 
 > SEZU is an owner-controlled, standalone, unrestricted root execution system. It performs requested work directly through one MCP tool. It does not add policy, approval, reporting, evidence, audit, or verification machinery.
 
