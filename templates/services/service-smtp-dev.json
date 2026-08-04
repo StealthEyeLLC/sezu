@@ -1,0 +1,17 @@
+{
+  "template_id": "service-smtp-dev",
+  "image_lock": "locks/service-images.json#service-smtp-dev",
+  "immutable_reference": "docker.io/axllent/mailpit@sha256:56341a70f45e512ee835c1f2e19e2fe42716fba03d8a0be72e1705ee21539fd4",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    1025,
+    8025
+  ],
+  "persistent_mounts": [
+    "/data"
+  ],
+  "required_environment": [
+    "MP_DATABASE"
+  ]
+}

@@ -1,0 +1,41 @@
+{
+  "schema_version": 1,
+  "image_server": "https://images.linuxcontainers.org",
+  "product": "ubuntu:noble:amd64:cloud",
+  "distribution": "Ubuntu",
+  "release": "Noble",
+  "architecture": "amd64",
+  "variant": "cloud",
+  "serial": "20260803_07:42",
+  "metadata_fingerprint": "09af9c281d297228b9c2b224ce8fefb3c325d5590993aff6896a4ef8d8307a58",
+  "root_filesystem_fingerprint": "652b7155c388020cc54db517201836bda8c1004135d563c01ea2be8e6743c3ca",
+  "incus_image_fingerprint": "01791a983f5cb352f52472333c7121215579c619b4f5e8a31db4895928b77d25",
+  "squashfs_image_fingerprint": "87de0af9191a21945d91c91c19b6174cc573b55a1111d10405d81900a79bd786",
+  "vm_image_fingerprint": "31403edf70cc5c2c58a1f4b0491c6635b21b32b45c5c73590f20b2e338ed765f",
+  "artifacts": [
+    {
+      "role": "metadata",
+      "url": "https://images.linuxcontainers.org/images/ubuntu/noble/amd64/cloud/20260803_07:42/incus.tar.xz",
+      "size": 1220,
+      "sha256": "09af9c281d297228b9c2b224ce8fefb3c325d5590993aff6896a4ef8d8307a58"
+    },
+    {
+      "role": "rootfs-tar-xz",
+      "url": "https://images.linuxcontainers.org/images/ubuntu/noble/amd64/cloud/20260803_07:42/rootfs.tar.xz",
+      "size": 155149636,
+      "sha256": "652b7155c388020cc54db517201836bda8c1004135d563c01ea2be8e6743c3ca"
+    },
+    {
+      "role": "rootfs-squashfs",
+      "url": "https://images.linuxcontainers.org/images/ubuntu/noble/amd64/cloud/20260803_07:42/rootfs.squashfs",
+      "size": 168202240,
+      "sha256": "0442b68499b1063f2221f2dfe0b21dfd8a1510cfb6b0ac46af69911fe5e4e62f"
+    },
+    {
+      "role": "disk-qcow2",
+      "url": "https://images.linuxcontainers.org/images/ubuntu/noble/amd64/cloud/20260803_07:42/disk.qcow2",
+      "size": 340270592,
+      "sha256": "11f90db04bdfc5b9c5d48ac12470e8e3588350d75da1a7eb5d6447b5e879ef12"
+    }
+  ]
+}

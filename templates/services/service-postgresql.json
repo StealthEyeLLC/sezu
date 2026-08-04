@@ -1,0 +1,18 @@
+{
+  "template_id": "service-postgresql",
+  "image_lock": "locks/service-images.json#service-postgresql",
+  "immutable_reference": "docker.io/library/postgres@sha256:d93de42662696f278fb34354b06fdaa90ad7ca3106d6f72fbd01d16da006d2cf",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    5432
+  ],
+  "persistent_mounts": [
+    "/var/lib/postgresql/data"
+  ],
+  "required_environment": [
+    "POSTGRES_PASSWORD",
+    "POSTGRES_USER",
+    "POSTGRES_DB"
+  ]
+}

@@ -1,0 +1,19 @@
+{
+  "template_id": "service-rabbitmq",
+  "image_lock": "locks/service-images.json#service-rabbitmq",
+  "immutable_reference": "docker.io/library/rabbitmq@sha256:216509ee9e2d889e6cd8f050100dae23011e5da3d3e3660d77d61618a96a9d42",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    5672,
+    15672
+  ],
+  "persistent_mounts": [
+    "/var/lib/rabbitmq"
+  ],
+  "required_environment": [
+    "RABBITMQ_DEFAULT_USER",
+    "RABBITMQ_DEFAULT_PASS",
+    "RABBITMQ_DEFAULT_VHOST"
+  ]
+}

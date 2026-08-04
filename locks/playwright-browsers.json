@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "playwright_package_version": "1.62.1",
+  "browsers": [
+    {
+      "name": "chromium",
+      "browser_product": "Chrome for Testing",
+      "browser_version": "151.0.7922.34",
+      "revision": "1234",
+      "platform": "linux-amd64",
+      "artifact_url": "https://cdn.playwright.dev/builds/cft/151.0.7922.34/linux64/chrome-linux64.zip",
+      "size": 193282658,
+      "sha256": "ae8736ac28bc69278551500f219fc749575648263c43ec5990749eff43b9fcf8",
+      "system_packages_lock": "locks/apt-u.tsv",
+      "system_package_group": "browser-system"
+    }
+  ],
+  "excluded_browsers": ["firefox", "webkit"]
+}

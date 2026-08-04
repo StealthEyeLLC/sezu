@@ -1,0 +1,23 @@
+{
+  "template_id": "service-minio",
+  "image_lock": "locks/service-images.json#service-minio",
+  "immutable_reference": "docker.io/minio/minio@sha256:a1a8bd4ac40ad7881a245bab97323e18f971e4d4cba2c2007ec1bedd21cbaba2",
+  "instance_type": "container",
+  "command": [
+    "server",
+    "/data",
+    "--console-address",
+    ":9001"
+  ],
+  "ports": [
+    9000,
+    9001
+  ],
+  "persistent_mounts": [
+    "/data"
+  ],
+  "required_environment": [
+    "MINIO_ROOT_USER",
+    "MINIO_ROOT_PASSWORD"
+  ]
+}

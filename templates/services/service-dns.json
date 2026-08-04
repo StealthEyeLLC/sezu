@@ -1,0 +1,17 @@
+{
+  "template_id": "service-dns",
+  "image_lock": "locks/service-images.json#service-dns",
+  "immutable_reference": "docker.io/coredns/coredns@sha256:1ba6f47265602e2e50a9c4669e3a955e4298a0d30dc82f39293d4bf1a851e0ff",
+  "instance_type": "container",
+  "command": [
+    "-conf",
+    "/etc/coredns/Corefile"
+  ],
+  "ports": [
+    53
+  ],
+  "persistent_mounts": [
+    "/etc/coredns"
+  ],
+  "required_environment": []
+}

@@ -1,0 +1,18 @@
+{
+  "template_id": "service-mongodb",
+  "image_lock": "locks/service-images.json#service-mongodb",
+  "immutable_reference": "docker.io/library/mongo@sha256:4d47ba9b801505f591671aaa0848c20f929910c03e4a559b01ee8ffffe06ab79",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    27017
+  ],
+  "persistent_mounts": [
+    "/data/db"
+  ],
+  "required_environment": [
+    "MONGO_INITDB_ROOT_USERNAME",
+    "MONGO_INITDB_ROOT_PASSWORD",
+    "MONGO_INITDB_DATABASE"
+  ]
+}

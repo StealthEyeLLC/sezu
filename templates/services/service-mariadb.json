@@ -1,0 +1,19 @@
+{
+  "template_id": "service-mariadb",
+  "image_lock": "locks/service-images.json#service-mariadb",
+  "immutable_reference": "docker.io/library/mariadb@sha256:1aed3452135970efc2fb44d423c070c604f1a47b66ce9000364c5c8bd318a212",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    3306
+  ],
+  "persistent_mounts": [
+    "/var/lib/mysql"
+  ],
+  "required_environment": [
+    "MARIADB_ROOT_PASSWORD",
+    "MARIADB_DATABASE",
+    "MARIADB_USER",
+    "MARIADB_PASSWORD"
+  ]
+}

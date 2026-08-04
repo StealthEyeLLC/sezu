@@ -1,0 +1,14 @@
+{
+  "template_id": "service-http",
+  "image_lock": "locks/service-images.json#service-http",
+  "immutable_reference": "docker.io/library/nginx@sha256:1d40e3eb3bf4f138de1d67193f2aa5309fcaf343eb5ffadbf5e9439de1eb1ebb",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    80
+  ],
+  "persistent_mounts": [
+    "/usr/share/nginx/html"
+  ],
+  "required_environment": []
+}

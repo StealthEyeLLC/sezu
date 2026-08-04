@@ -1,0 +1,16 @@
+{
+  "template_id": "service-oci-registry",
+  "image_lock": "locks/service-images.json#service-oci-registry",
+  "immutable_reference": "docker.io/library/registry@sha256:7518da9b12dd746278282a729dee2e65eabdeb449db4d0b28d46ef6e90308f58",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    5000
+  ],
+  "persistent_mounts": [
+    "/var/lib/registry"
+  ],
+  "required_environment": [
+    "REGISTRY_HTTP_SECRET"
+  ]
+}

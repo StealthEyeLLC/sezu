@@ -1,6 +1,6 @@
 # SEZU ChatGPT Project Sources
 
-Upload these five files to the SEZU ChatGPT Project and remove superseded copies:
+The five canonical ChatGPT Project sources are:
 
 1. `SEZU_FINAL_ENGINEERING_SPEC.md`
 2. `docs/project/00_SEZU_PROJECT_CHARTER.md`
@@ -8,4 +8,4 @@ Upload these five files to the SEZU ChatGPT Project and remove superseded copies
 4. `docs/project/02_SEZU_TURN_FAILURE_RESILIENCE.md`
 5. `docs/project/03_SEZU_PHASE_PROMPT_STANDARD.md`
 
-The repository copies and ChatGPT Project copies must remain byte-identical.
+Upload these current repository copies to the SEZU ChatGPT Project and remove superseded copies. Ordinary project documentation is not part of the build-input digest set. Immutable package, artifact, browser, image, and Git identities are recorded in `locks/`.

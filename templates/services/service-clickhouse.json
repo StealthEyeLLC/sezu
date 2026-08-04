@@ -1,0 +1,19 @@
+{
+  "template_id": "service-clickhouse",
+  "image_lock": "locks/service-images.json#service-clickhouse",
+  "immutable_reference": "docker.io/clickhouse/clickhouse-server@sha256:b23116b1ac3adcd378fdd4236c4d52d006fa1dc5ccac9e46cd36750601457d3c",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    8123,
+    9000
+  ],
+  "persistent_mounts": [
+    "/var/lib/clickhouse"
+  ],
+  "required_environment": [
+    "CLICKHOUSE_USER",
+    "CLICKHOUSE_PASSWORD",
+    "CLICKHOUSE_DB"
+  ]
+}

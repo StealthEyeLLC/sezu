@@ -1,0 +1,18 @@
+{
+  "template_id": "service-opensearch",
+  "image_lock": "locks/service-images.json#service-opensearch",
+  "immutable_reference": "docker.io/opensearchproject/opensearch@sha256:541d24318eee81caf909656c7e2dc34866e4d25587e9ad5388684c4977778904",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    9200,
+    9600
+  ],
+  "persistent_mounts": [
+    "/usr/share/opensearch/data"
+  ],
+  "required_environment": [
+    "OPENSEARCH_INITIAL_ADMIN_PASSWORD",
+    "discovery.type"
+  ]
+}

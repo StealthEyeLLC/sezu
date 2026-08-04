@@ -1,0 +1,17 @@
+{
+  "template_id": "service-qdrant",
+  "image_lock": "locks/service-images.json#service-qdrant",
+  "immutable_reference": "docker.io/qdrant/qdrant@sha256:6c0652f8d6925b22f2f6f0e0a5365a6c9dbc8768bd6e70ccc1cdc14847e452a0",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    6333,
+    6334
+  ],
+  "persistent_mounts": [
+    "/qdrant/storage"
+  ],
+  "required_environment": [
+    "QDRANT__SERVICE__API_KEY"
+  ]
+}

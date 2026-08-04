@@ -1,0 +1,14 @@
+{
+  "template_id": "service-redis",
+  "image_lock": "locks/service-images.json#service-redis",
+  "immutable_reference": "docker.io/library/redis@sha256:3cdb04fc82d909d929d4fcf30ee8011491a8dcc0a91a44b8757fa13077d0e06f",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    6379
+  ],
+  "persistent_mounts": [
+    "/data"
+  ],
+  "required_environment": []
+}

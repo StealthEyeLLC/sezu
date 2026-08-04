@@ -1,0 +1,17 @@
+{
+  "template_id": "service-meilisearch",
+  "image_lock": "locks/service-images.json#service-meilisearch",
+  "immutable_reference": "docker.io/getmeili/meilisearch@sha256:82a382ca717bbe700b72f834e489cb2278caa059c39c800f78a898a71e06510f",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    7700
+  ],
+  "persistent_mounts": [
+    "/meili_data"
+  ],
+  "required_environment": [
+    "MEILI_MASTER_KEY",
+    "MEILI_ENV"
+  ]
+}

@@ -1,0 +1,286 @@
+{
+  "schema_version": 1,
+  "release": "0.1.0",
+  "licenses": [
+    {
+      "component": "Ubuntu Noble APT packages",
+      "spdx": "VARIOUS",
+      "source": "https://packages.ubuntu.com/noble/"
+    },
+    {
+      "component": "Zabbly Incus 6.0 LTS packages",
+      "spdx": "Apache-2.0",
+      "source": "https://github.com/lxc/incus/blob/v6.0.6/COPYING"
+    },
+    {
+      "component": "Node.js",
+      "spdx": "MIT",
+      "source": "https://github.com/nodejs/node/blob/v24.19.0/LICENSE"
+    },
+    {
+      "component": "SEZU npm dependency closure",
+      "spdx": "VARIOUS",
+      "source": "locks/npm-lock.json"
+    },
+    {
+      "component": "SEZU Python dependency closure",
+      "spdx": "VARIOUS",
+      "source": "locks/python-uv.lock"
+    },
+    {
+      "component": "Playwright",
+      "spdx": "Apache-2.0",
+      "source": "https://github.com/microsoft/playwright/blob/v1.62.1/LICENSE"
+    },
+    {
+      "component": "Chromium",
+      "spdx": "BSD-3-Clause",
+      "source": "https://chromium.googlesource.com/chromium/src/+/refs/heads/main/LICENSE"
+    },
+    {
+      "component": "Ubuntu Noble cloud image",
+      "spdx": "VARIOUS",
+      "source": "https://images.linuxcontainers.org/"
+    },
+    {
+      "component": "nodejs",
+      "version": "24.19.0",
+      "spdx": "MIT",
+      "source": "https://nodejs.org/dist/v24.19.0/node-v24.19.0-linux-x64.tar.xz"
+    },
+    {
+      "component": "tunnel-client",
+      "version": "0.0.10",
+      "spdx": "NOASSERTION",
+      "source": "https://github.com/openai/tunnel-client"
+    },
+    {
+      "component": "bun",
+      "version": "1.3.14",
+      "spdx": "MIT",
+      "source": "https://github.com/oven-sh/bun"
+    },
+    {
+      "component": "deno",
+      "version": "2.9.4",
+      "spdx": "MIT",
+      "source": "https://github.com/denoland/deno"
+    },
+    {
+      "component": "dotnet-sdk",
+      "version": "10.0.302",
+      "spdx": "MIT",
+      "source": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.302/dotnet-sdk-10.0.302-linux-x64.tar.gz"
+    },
+    {
+      "component": "kotlin-compiler",
+      "version": "2.4.10",
+      "spdx": "Apache-2.0",
+      "source": "https://github.com/JetBrains/kotlin"
+    },
+    {
+      "component": "julia",
+      "version": "1.12.6",
+      "spdx": "MIT",
+      "source": "https://julialang-s3.julialang.org/bin/linux/x64/1.12/julia-1.12.6-linux-x86_64.tar.gz"
+    },
+    {
+      "component": "dart-sdk",
+      "version": "3.12.2",
+      "spdx": "BSD-3-Clause",
+      "source": "https://storage.googleapis.com/dart-archive/channels/stable/release/3.12.2/sdk/dartsdk-linux-x64-release.zip"
+    },
+    {
+      "component": "powershell",
+      "version": "7.6.4",
+      "spdx": "MIT",
+      "source": "https://github.com/PowerShell/PowerShell"
+    },
+    {
+      "component": "swift",
+      "version": "6.2.3",
+      "spdx": "Apache-2.0",
+      "source": "https://download.swift.org/swift-6.2.3-release/ubuntu2404/swift-6.2.3-RELEASE/swift-6.2.3-RELEASE-ubuntu24.04.tar.gz"
+    },
+    {
+      "component": "typst",
+      "version": "0.15.1",
+      "spdx": "Apache-2.0",
+      "source": "https://github.com/typst/typst"
+    },
+    {
+      "component": "wasmtime",
+      "version": "47.0.3",
+      "spdx": "Apache-2.0 WITH LLVM-exception",
+      "source": "https://github.com/bytecodealliance/wasmtime"
+    },
+    {
+      "component": "wasm-tools",
+      "version": "1.255.0",
+      "spdx": "Apache-2.0 WITH LLVM-exception",
+      "source": "https://github.com/bytecodealliance/wasm-tools"
+    },
+    {
+      "component": "wit-bindgen",
+      "version": "0.60.0",
+      "spdx": "Apache-2.0 WITH LLVM-exception",
+      "source": "https://github.com/bytecodealliance/wit-bindgen"
+    },
+    {
+      "component": "wasm-pack",
+      "version": "0.15.0",
+      "spdx": "MIT OR Apache-2.0",
+      "source": "https://github.com/rustwasm/wasm-pack"
+    },
+    {
+      "component": "packer",
+      "version": "1.16.0",
+      "spdx": "BUSL-1.1",
+      "source": "https://releases.hashicorp.com/packer/1.16.0/packer_1.16.0_linux_amd64.zip"
+    },
+    {
+      "component": "bazel",
+      "version": "9.2.0",
+      "spdx": "Apache-2.0",
+      "source": "https://github.com/bazelbuild/bazel"
+    },
+    {
+      "component": "vcpkg",
+      "version": "2026.07.29",
+      "spdx": "MIT",
+      "source": "https://github.com/microsoft/vcpkg"
+    },
+    {
+      "component": "grpcurl",
+      "version": "1.9.3",
+      "spdx": "MIT",
+      "source": "https://github.com/fullstorydev/grpcurl"
+    },
+    {
+      "component": "websocat",
+      "version": "1.14.1",
+      "spdx": "MIT",
+      "source": "https://github.com/vi/websocat"
+    },
+    {
+      "component": "nats-cli",
+      "version": "0.4.0",
+      "spdx": "Apache-2.0",
+      "source": "https://github.com/nats-io/natscli"
+    },
+    {
+      "component": "github-cli",
+      "version": "2.97.0",
+      "spdx": "MIT",
+      "source": "https://github.com/cli/cli"
+    },
+    {
+      "component": "opentofu",
+      "version": "1.12.5",
+      "spdx": "MPL-2.0",
+      "source": "https://github.com/opentofu/opentofu"
+    },
+    {
+      "component": "kubectl",
+      "version": "1.36.3",
+      "spdx": "Apache-2.0",
+      "source": "https://dl.k8s.io/release/v1.36.3/bin/linux/amd64/kubectl"
+    },
+    {
+      "component": "minio-client",
+      "version": "2025-08-13T08-35-41Z",
+      "spdx": "AGPL-3.0-only",
+      "source": "https://github.com/minio/mc"
+    },
+    {
+      "component": "sops",
+      "version": "3.13.3",
+      "spdx": "MPL-2.0",
+      "source": "https://github.com/getsops/sops"
+    },
+    {
+      "component": "ghidra",
+      "version": "12.1.2",
+      "spdx": "Apache-2.0",
+      "source": "https://github.com/NationalSecurityAgency/ghidra"
+    },
+    {
+      "component": "radare2",
+      "version": "6.1.8",
+      "spdx": "LGPL-3.0-only",
+      "source": "https://github.com/radareorg/radare2"
+    },
+    {
+      "component": "binwalk",
+      "version": "3.1.0",
+      "spdx": "MIT",
+      "source": "https://github.com/ReFirmLabs/binwalk"
+    },
+    {
+      "component": "apache-spark",
+      "version": "4.2.0",
+      "spdx": "Apache-2.0",
+      "source": "https://archive.apache.org/dist/spark/spark-4.2.0/spark-4.2.0-bin-hadoop3.tgz"
+    },
+    {
+      "component": "aws-cli",
+      "version": "2.36.15",
+      "spdx": "Apache-2.0",
+      "source": "https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.36.15.zip"
+    },
+    {
+      "component": "aws-session-manager-plugin",
+      "version": "1.2.707.0",
+      "spdx": "Apache-2.0",
+      "source": "https://s3.amazonaws.com/session-manager-downloads/plugin/1.2.707.0/ubuntu_64bit/session-manager-plugin.deb"
+    },
+    {
+      "component": "azure-cli",
+      "version": "2.89.0-1~noble",
+      "spdx": "MIT",
+      "source": "https://packages.microsoft.com/repos/azure-cli/pool/main/a/azure-cli/azure-cli_2.89.0-1~noble_amd64.deb"
+    },
+    {
+      "component": "google-cloud-cli",
+      "version": "579.0.0",
+      "spdx": "Apache-2.0",
+      "source": "https://dl.google.com/dl/cloudsdk/channels/rapid/downloads/google-cloud-cli-579.0.0-linux-x86_64.tar.gz"
+    },
+    {
+      "component": "gitlab-cli",
+      "version": "1.112.0",
+      "spdx": "MIT",
+      "source": "https://gitlab.com/gitlab-org/cli"
+    },
+    {
+      "component": "uv",
+      "version": "0.12.1",
+      "spdx": "Apache-2.0 OR MIT",
+      "source": "https://github.com/astral-sh/uv"
+    },
+    {
+      "component": "Locked service OCI images",
+      "spdx": "VARIOUS",
+      "source": "locks/service-images.json",
+      "members": [
+        "PostgreSQL 18.4",
+        "MariaDB 12.3.2",
+        "Redis 8.10.0",
+        "MongoDB 8.3.7",
+        "ClickHouse 26.7.2.59-alpine",
+        "Qdrant 1.19.0",
+        "Meilisearch 1.52.0",
+        "OpenSearch 3.7.0",
+        "RabbitMQ 4.3.4-management-alpine",
+        "NATS 2.14.4-alpine",
+        "Redpanda 26.2.1",
+        "MinIO RELEASE.2025-09-07T16-13-09Z",
+        "OCI Distribution Registry 3.1.1",
+        "Mailpit 1.30.6",
+        "CoreDNS 1.14.6",
+        "nginx 1.31.3-alpine",
+        "Caddy 2.11.4-alpine"
+      ]
+    }
+  ]
+}

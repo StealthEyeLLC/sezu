@@ -1,0 +1,20 @@
+{
+  "template_id": "service-nats",
+  "image_lock": "locks/service-images.json#service-nats",
+  "immutable_reference": "docker.io/library/nats@sha256:304a5f13020ccab5f50fe8d5549855cf99a9ed424560b95660c0c0a98b7c9e9a",
+  "instance_type": "container",
+  "command": [
+    "-js",
+    "-sd",
+    "/data"
+  ],
+  "ports": [
+    4222,
+    6222,
+    8222
+  ],
+  "persistent_mounts": [
+    "/data"
+  ],
+  "required_environment": []
+}

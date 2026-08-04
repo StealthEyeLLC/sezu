@@ -1,0 +1,28 @@
+{
+  "template_id": "service-redpanda",
+  "image_lock": "locks/service-images.json#service-redpanda",
+  "immutable_reference": "docker.io/redpandadata/redpanda@sha256:34f9fba9241bf45a12d3a7763da50be1e3d57c722d72a895eb619e140a1b9768",
+  "instance_type": "container",
+  "command": [
+    "redpanda",
+    "start",
+    "--overprovisioned",
+    "--smp",
+    "1",
+    "--memory",
+    "1G",
+    "--reserve-memory",
+    "0M",
+    "--node-id",
+    "0",
+    "--check=false"
+  ],
+  "ports": [
+    9092,
+    9644
+  ],
+  "persistent_mounts": [
+    "/var/lib/redpanda/data"
+  ],
+  "required_environment": []
+}

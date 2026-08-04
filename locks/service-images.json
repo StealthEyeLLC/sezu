@@ -1,0 +1,487 @@
+{
+  "schema_version": 1,
+  "platform": "linux/amd64",
+  "services": [
+    {
+      "template_id": "service-postgresql",
+      "product": "PostgreSQL",
+      "version": "18.4",
+      "registry": "docker.io",
+      "repository": "library/postgres",
+      "tag": "18.4",
+      "index_digest": "sha256:3a82e1f56c8f0f5616a11103ac3d47e632c3938698946a7ad26da0df1334744a",
+      "platform_digest": "sha256:d93de42662696f278fb34354b06fdaa90ad7ca3106d6f72fbd01d16da006d2cf",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        5432
+      ],
+      "persistent_mounts": [
+        "/var/lib/postgresql/data"
+      ],
+      "required_environment": [
+        "POSTGRES_PASSWORD",
+        "POSTGRES_USER",
+        "POSTGRES_DB"
+      ],
+      "immutable_reference": "docker.io/library/postgres@sha256:d93de42662696f278fb34354b06fdaa90ad7ca3106d6f72fbd01d16da006d2cf"
+    },
+    {
+      "template_id": "service-mariadb",
+      "product": "MariaDB",
+      "version": "12.3.2",
+      "registry": "docker.io",
+      "repository": "library/mariadb",
+      "tag": "12.3.2",
+      "index_digest": "sha256:759869cb6f003234a95c6384cdee245b4bce7de26913fe607a8110362c0c007d",
+      "platform_digest": "sha256:1aed3452135970efc2fb44d423c070c604f1a47b66ce9000364c5c8bd318a212",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        3306
+      ],
+      "persistent_mounts": [
+        "/var/lib/mysql"
+      ],
+      "required_environment": [
+        "MARIADB_ROOT_PASSWORD",
+        "MARIADB_DATABASE",
+        "MARIADB_USER",
+        "MARIADB_PASSWORD"
+      ],
+      "immutable_reference": "docker.io/library/mariadb@sha256:1aed3452135970efc2fb44d423c070c604f1a47b66ce9000364c5c8bd318a212"
+    },
+    {
+      "template_id": "service-redis",
+      "product": "Redis",
+      "version": "8.10.0",
+      "registry": "docker.io",
+      "repository": "library/redis",
+      "tag": "8.10.0",
+      "index_digest": "sha256:a7efd4ed5037dcfe1543c0e50b9f06293d3e88827005544bf37f381eea5f01cf",
+      "platform_digest": "sha256:3cdb04fc82d909d929d4fcf30ee8011491a8dcc0a91a44b8757fa13077d0e06f",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        6379
+      ],
+      "persistent_mounts": [
+        "/data"
+      ],
+      "required_environment": [],
+      "immutable_reference": "docker.io/library/redis@sha256:3cdb04fc82d909d929d4fcf30ee8011491a8dcc0a91a44b8757fa13077d0e06f"
+    },
+    {
+      "template_id": "service-mongodb",
+      "product": "MongoDB",
+      "version": "8.3.7",
+      "registry": "docker.io",
+      "repository": "library/mongo",
+      "tag": "8.3.7",
+      "index_digest": "sha256:2f02e2184c6d91c3208e5ab75a0707d1386a05377b20fdaf49a314815774d863",
+      "platform_digest": "sha256:4d47ba9b801505f591671aaa0848c20f929910c03e4a559b01ee8ffffe06ab79",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        27017
+      ],
+      "persistent_mounts": [
+        "/data/db"
+      ],
+      "required_environment": [
+        "MONGO_INITDB_ROOT_USERNAME",
+        "MONGO_INITDB_ROOT_PASSWORD",
+        "MONGO_INITDB_DATABASE"
+      ],
+      "immutable_reference": "docker.io/library/mongo@sha256:4d47ba9b801505f591671aaa0848c20f929910c03e4a559b01ee8ffffe06ab79"
+    },
+    {
+      "template_id": "service-clickhouse",
+      "product": "ClickHouse",
+      "version": "26.7.2.59-alpine",
+      "registry": "docker.io",
+      "repository": "clickhouse/clickhouse-server",
+      "tag": "26.7.2.59-alpine",
+      "index_digest": "sha256:9ef3dbc80181fa7746ba8759728696c79ba7c925af23948974462c8914c4f44d",
+      "platform_digest": "sha256:b23116b1ac3adcd378fdd4236c4d52d006fa1dc5ccac9e46cd36750601457d3c",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        8123,
+        9000
+      ],
+      "persistent_mounts": [
+        "/var/lib/clickhouse"
+      ],
+      "required_environment": [
+        "CLICKHOUSE_USER",
+        "CLICKHOUSE_PASSWORD",
+        "CLICKHOUSE_DB"
+      ],
+      "immutable_reference": "docker.io/clickhouse/clickhouse-server@sha256:b23116b1ac3adcd378fdd4236c4d52d006fa1dc5ccac9e46cd36750601457d3c"
+    },
+    {
+      "template_id": "service-qdrant",
+      "product": "Qdrant",
+      "version": "1.19.0",
+      "registry": "docker.io",
+      "repository": "qdrant/qdrant",
+      "tag": "v1.19.0",
+      "index_digest": "sha256:057ee3a8da769fe7310dd3537b4dc7583bf87a95ce8ac43c0af5a46bc580d1fc",
+      "platform_digest": "sha256:6c0652f8d6925b22f2f6f0e0a5365a6c9dbc8768bd6e70ccc1cdc14847e452a0",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        6333,
+        6334
+      ],
+      "persistent_mounts": [
+        "/qdrant/storage"
+      ],
+      "required_environment": [
+        "QDRANT__SERVICE__API_KEY"
+      ],
+      "immutable_reference": "docker.io/qdrant/qdrant@sha256:6c0652f8d6925b22f2f6f0e0a5365a6c9dbc8768bd6e70ccc1cdc14847e452a0"
+    },
+    {
+      "template_id": "service-meilisearch",
+      "product": "Meilisearch",
+      "version": "1.52.0",
+      "registry": "docker.io",
+      "repository": "getmeili/meilisearch",
+      "tag": "v1.52.0",
+      "index_digest": "sha256:d36e713e8f89483af1ab0d72011bbd503f5ab100b68ccbfad51c39e3f0a0567d",
+      "platform_digest": "sha256:82a382ca717bbe700b72f834e489cb2278caa059c39c800f78a898a71e06510f",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        7700
+      ],
+      "persistent_mounts": [
+        "/meili_data"
+      ],
+      "required_environment": [
+        "MEILI_MASTER_KEY",
+        "MEILI_ENV"
+      ],
+      "immutable_reference": "docker.io/getmeili/meilisearch@sha256:82a382ca717bbe700b72f834e489cb2278caa059c39c800f78a898a71e06510f"
+    },
+    {
+      "template_id": "service-opensearch",
+      "product": "OpenSearch",
+      "version": "3.7.0",
+      "registry": "docker.io",
+      "repository": "opensearchproject/opensearch",
+      "tag": "3.7.0",
+      "index_digest": "sha256:44ba7ea58a319adf61c33ab16873f9ef5dbb30b291a832d375172f0b2d24e3c9",
+      "platform_digest": "sha256:541d24318eee81caf909656c7e2dc34866e4d25587e9ad5388684c4977778904",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        9200,
+        9600
+      ],
+      "persistent_mounts": [
+        "/usr/share/opensearch/data"
+      ],
+      "required_environment": [
+        "OPENSEARCH_INITIAL_ADMIN_PASSWORD",
+        "discovery.type"
+      ],
+      "immutable_reference": "docker.io/opensearchproject/opensearch@sha256:541d24318eee81caf909656c7e2dc34866e4d25587e9ad5388684c4977778904"
+    },
+    {
+      "template_id": "service-rabbitmq",
+      "product": "RabbitMQ",
+      "version": "4.3.4-management-alpine",
+      "registry": "docker.io",
+      "repository": "library/rabbitmq",
+      "tag": "4.3.4-management-alpine",
+      "index_digest": "sha256:09b39ca8a3e884e91cab8842cd41264de21aab0625e1f1d016a9a3135ba590ef",
+      "platform_digest": "sha256:216509ee9e2d889e6cd8f050100dae23011e5da3d3e3660d77d61618a96a9d42",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        5672,
+        15672
+      ],
+      "persistent_mounts": [
+        "/var/lib/rabbitmq"
+      ],
+      "required_environment": [
+        "RABBITMQ_DEFAULT_USER",
+        "RABBITMQ_DEFAULT_PASS",
+        "RABBITMQ_DEFAULT_VHOST"
+      ],
+      "immutable_reference": "docker.io/library/rabbitmq@sha256:216509ee9e2d889e6cd8f050100dae23011e5da3d3e3660d77d61618a96a9d42"
+    },
+    {
+      "template_id": "service-nats",
+      "product": "NATS",
+      "version": "2.14.4-alpine",
+      "registry": "docker.io",
+      "repository": "library/nats",
+      "tag": "2.14.4-alpine",
+      "index_digest": "sha256:f2123f533c2b0cada0a5c5ec434fb2b8cfe1cf220215ef9d7517e1372917ad66",
+      "platform_digest": "sha256:304a5f13020ccab5f50fe8d5549855cf99a9ed424560b95660c0c0a98b7c9e9a",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": [
+        "-js",
+        "-sd",
+        "/data"
+      ],
+      "ports": [
+        4222,
+        6222,
+        8222
+      ],
+      "persistent_mounts": [
+        "/data"
+      ],
+      "required_environment": [],
+      "immutable_reference": "docker.io/library/nats@sha256:304a5f13020ccab5f50fe8d5549855cf99a9ed424560b95660c0c0a98b7c9e9a"
+    },
+    {
+      "template_id": "service-redpanda",
+      "product": "Redpanda",
+      "version": "26.2.1",
+      "registry": "docker.io",
+      "repository": "redpandadata/redpanda",
+      "tag": "v26.2.1",
+      "index_digest": "sha256:9a47c1f8d6736f98fa2616f6f0b715c051cb0bdac1a1176e38321bf45a5b572d",
+      "platform_digest": "sha256:34f9fba9241bf45a12d3a7763da50be1e3d57c722d72a895eb619e140a1b9768",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": [
+        "redpanda",
+        "start",
+        "--overprovisioned",
+        "--smp",
+        "1",
+        "--memory",
+        "1G",
+        "--reserve-memory",
+        "0M",
+        "--node-id",
+        "0",
+        "--check=false"
+      ],
+      "ports": [
+        9092,
+        9644
+      ],
+      "persistent_mounts": [
+        "/var/lib/redpanda/data"
+      ],
+      "required_environment": [],
+      "immutable_reference": "docker.io/redpandadata/redpanda@sha256:34f9fba9241bf45a12d3a7763da50be1e3d57c722d72a895eb619e140a1b9768"
+    },
+    {
+      "template_id": "service-minio",
+      "product": "MinIO",
+      "version": "RELEASE.2025-09-07T16-13-09Z",
+      "registry": "docker.io",
+      "repository": "minio/minio",
+      "tag": "RELEASE.2025-09-07T16-13-09Z",
+      "index_digest": "sha256:14cea493d9a34af32f524e538b8346cf79f3321eff8e708c1e2960462bd8936e",
+      "platform_digest": "sha256:a1a8bd4ac40ad7881a245bab97323e18f971e4d4cba2c2007ec1bedd21cbaba2",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": [
+        "server",
+        "/data",
+        "--console-address",
+        ":9001"
+      ],
+      "ports": [
+        9000,
+        9001
+      ],
+      "persistent_mounts": [
+        "/data"
+      ],
+      "required_environment": [
+        "MINIO_ROOT_USER",
+        "MINIO_ROOT_PASSWORD"
+      ],
+      "immutable_reference": "docker.io/minio/minio@sha256:a1a8bd4ac40ad7881a245bab97323e18f971e4d4cba2c2007ec1bedd21cbaba2"
+    },
+    {
+      "template_id": "service-oci-registry",
+      "product": "OCI Distribution Registry",
+      "version": "3.1.1",
+      "registry": "docker.io",
+      "repository": "library/registry",
+      "tag": "3.1.1",
+      "index_digest": "sha256:1be55279f18a2fe1a74edf2664cac61c1bea305b7b4642dab412e7affdcb3e33",
+      "platform_digest": "sha256:7518da9b12dd746278282a729dee2e65eabdeb449db4d0b28d46ef6e90308f58",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        5000
+      ],
+      "persistent_mounts": [
+        "/var/lib/registry"
+      ],
+      "required_environment": [
+        "REGISTRY_HTTP_SECRET"
+      ],
+      "immutable_reference": "docker.io/library/registry@sha256:7518da9b12dd746278282a729dee2e65eabdeb449db4d0b28d46ef6e90308f58"
+    },
+    {
+      "template_id": "service-smtp-dev",
+      "product": "Mailpit",
+      "version": "1.30.6",
+      "registry": "docker.io",
+      "repository": "axllent/mailpit",
+      "tag": "v1.30.6",
+      "index_digest": "sha256:7f33095f80e901f6ad08028f06ca284aa58fe84942be5496008d041d3b9f4d4d",
+      "platform_digest": "sha256:56341a70f45e512ee835c1f2e19e2fe42716fba03d8a0be72e1705ee21539fd4",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        1025,
+        8025
+      ],
+      "persistent_mounts": [
+        "/data"
+      ],
+      "required_environment": [
+        "MP_DATABASE"
+      ],
+      "immutable_reference": "docker.io/axllent/mailpit@sha256:56341a70f45e512ee835c1f2e19e2fe42716fba03d8a0be72e1705ee21539fd4"
+    },
+    {
+      "template_id": "service-dns",
+      "product": "CoreDNS",
+      "version": "1.14.6",
+      "registry": "docker.io",
+      "repository": "coredns/coredns",
+      "tag": "1.14.6",
+      "index_digest": "sha256:900f9c109f7a33545d3c811516e8376df9019147b750f5ce3e254468769176ea",
+      "platform_digest": "sha256:1ba6f47265602e2e50a9c4669e3a955e4298a0d30dc82f39293d4bf1a851e0ff",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": [
+        "-conf",
+        "/etc/coredns/Corefile"
+      ],
+      "ports": [
+        53
+      ],
+      "persistent_mounts": [
+        "/etc/coredns"
+      ],
+      "required_environment": [],
+      "immutable_reference": "docker.io/coredns/coredns@sha256:1ba6f47265602e2e50a9c4669e3a955e4298a0d30dc82f39293d4bf1a851e0ff"
+    },
+    {
+      "template_id": "service-http",
+      "product": "nginx",
+      "version": "1.31.3-alpine",
+      "registry": "docker.io",
+      "repository": "library/nginx",
+      "tag": "1.31.3-alpine",
+      "index_digest": "sha256:4a73073bd557c65b759505da037898b61f1be6cbcc3c2c3aeac22d2a470c1752",
+      "platform_digest": "sha256:1d40e3eb3bf4f138de1d67193f2aa5309fcaf343eb5ffadbf5e9439de1eb1ebb",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        80
+      ],
+      "persistent_mounts": [
+        "/usr/share/nginx/html"
+      ],
+      "required_environment": [],
+      "immutable_reference": "docker.io/library/nginx@sha256:1d40e3eb3bf4f138de1d67193f2aa5309fcaf343eb5ffadbf5e9439de1eb1ebb"
+    },
+    {
+      "template_id": "service-reverse-proxy",
+      "product": "Caddy",
+      "version": "2.11.4-alpine",
+      "registry": "docker.io",
+      "repository": "library/caddy",
+      "tag": "2.11.4-alpine",
+      "index_digest": "sha256:5f5c8640aae01df9654968d946d8f1a56c497f1dd5c5cda4cf95ab7c14d58648",
+      "platform_digest": "sha256:98eb57d882ccd5213d1688764db10c1ca2c58a1ca3a6717a3411ad798f7a423a",
+      "platform": {
+        "os": "linux",
+        "architecture": "amd64"
+      },
+      "instance_type": "container",
+      "command": null,
+      "ports": [
+        80,
+        443
+      ],
+      "persistent_mounts": [
+        "/data",
+        "/config",
+        "/etc/caddy"
+      ],
+      "required_environment": [],
+      "immutable_reference": "docker.io/library/caddy@sha256:98eb57d882ccd5213d1688764db10c1ca2c58a1ca3a6717a3411ad798f7a423a"
+    }
+  ]
+}

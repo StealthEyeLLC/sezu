@@ -1,0 +1,17 @@
+{
+  "template_id": "service-reverse-proxy",
+  "image_lock": "locks/service-images.json#service-reverse-proxy",
+  "immutable_reference": "docker.io/library/caddy@sha256:98eb57d882ccd5213d1688764db10c1ca2c58a1ca3a6717a3411ad798f7a423a",
+  "instance_type": "container",
+  "command": null,
+  "ports": [
+    80,
+    443
+  ],
+  "persistent_mounts": [
+    "/data",
+    "/config",
+    "/etc/caddy"
+  ],
+  "required_environment": []
+}
