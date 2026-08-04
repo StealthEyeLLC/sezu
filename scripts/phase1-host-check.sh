@@ -7,8 +7,6 @@ failures=0
 
 pass() { printf 'ok: %s\n' "$1"; }
 fail() { printf 'not ready: %s\n' "$1" >&2; failures=$((failures + 1)); }
-require() { if "$@"; then return 0; else return 1; fi; }
-
 . /etc/os-release
 [[ ${ID:-} == ubuntu && ${VERSION_ID:-} == 24.04 ]] && pass "Ubuntu 24.04" || fail "Ubuntu 24.04"
 [[ $(dpkg --print-architecture) == amd64 ]] && pass "amd64" || fail "amd64"
@@ -64,7 +62,11 @@ for module in "${modules[@]}"; do
   fi
   fail "kernel module $module"
 done
-[[ -f /etc/modules-load.d/sezu.conf ]] && pass "persistent module configuration" || fail "persistent module configuration"
+if cmp -s "$ROOT/systemd/modules-load/sezu.conf" /etc/modules-load.d/sezu.conf; then
+  pass "persistent module configuration"
+else
+  fail "persistent module configuration"
+fi
 
 sysctl_at_least() {
   local key=$1 expected=$2 actual
@@ -79,7 +81,12 @@ sysctl_at_least user.max_user_namespaces 1048576 && \
 [[ $(sysctl -n net.ipv4.ip_forward) == 1 ]] && \
 [[ $(sysctl -n net.bridge.bridge-nf-call-iptables) == 1 ]] && \
 [[ $(sysctl -n net.bridge.bridge-nf-call-ip6tables) == 1 ]] && pass "host sysctl settings" || fail "host sysctl settings"
-[[ -f /etc/sysctl.d/90-sezu.conf && -f /etc/security/limits.d/90-sezu.conf ]] && pass "persistent host limits" || fail "persistent host limits"
+persistent_config=1
+cmp -s "$ROOT/systemd/sysctl/sezu.conf" /etc/sysctl.d/90-sezu.conf || persistent_config=0
+cmp -s "$ROOT/config/host/limits.conf" /etc/security/limits.d/90-sezu.conf || persistent_config=0
+cmp -s "$ROOT/systemd/tmpfiles/sezu.conf" /etc/tmpfiles.d/sezu.conf || persistent_config=0
+cmp -s "$ROOT/systemd/zram-generator.conf" /etc/systemd/zram-generator.conf || persistent_config=0
+[[ $persistent_config -eq 1 ]] && pass "persistent host configuration" || fail "persistent host configuration"
 
 zram_line=$(swapon --show=NAME,SIZE --noheadings --bytes --raw 2>/dev/null | awk '$1=="/dev/zram0" {print $0}')
 [[ -n $zram_line && -f /etc/systemd/zram-generator.conf ]] && pass "zram swap $zram_line" || fail "zram swap"
@@ -111,10 +118,13 @@ else
   pass "later SEZU services are absent"
 fi
 
-if ip link show sezu-br0 >/dev/null 2>&1; then fail "sezu-br0 is absent"; else pass "sezu-br0 is absent"; fi
+if ip link show sezu-br0 >/dev/null 2>&1; then fail "host bridge sezu-br0 is absent"; else pass "host bridge sezu-br0 is absent"; fi
+if incus network list --format csv -c n 2>/dev/null | grep -qx sezu-br0; then fail "Incus network sezu-br0 is absent"; else pass "Incus network sezu-br0 is absent"; fi
 if incus project list --format csv 2>/dev/null | cut -d, -f1 | grep -qx sezu; then fail "Incus project sezu is absent"; else pass "Incus project sezu is absent"; fi
 if incus storage list --format csv -c n 2>/dev/null | grep -qx sezu-btrfs; then fail "Incus pool sezu-btrfs is absent"; else pass "Incus pool sezu-btrfs is absent"; fi
+if incus profile list --format csv 2>/dev/null | cut -d, -f1 | grep -qx sezu-u-power; then fail "Incus profile sezu-u-power is absent"; else pass "Incus profile sezu-u-power is absent"; fi
 if incus list --format csv -c n 2>/dev/null | grep -Eq '^(u|u-build)$'; then fail "u and u-build are absent"; else pass "u and u-build are absent"; fi
+if incus image list --format csv -c f 2>/dev/null | grep -q .; then fail "Incus images are absent"; else pass "Incus images are absent"; fi
 ip -4 -o addr show dev ens3 | grep -q '51\.81\.86\.225/32' && pass "public IPv4 unchanged" || fail "public IPv4 unchanged"
 if ip -6 -o addr show dev ens3 scope global | grep -q .; then fail "SEZU host IPv6 is not configured"; else pass "SEZU host IPv6 is not configured"; fi
 
