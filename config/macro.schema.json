@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sezu.local/schema/macro.schema.json",
+  "title": "SEZU Macro",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "steps"],
+  "properties": {
+    "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"},
+    "description": {"type": "string"},
+    "mode": {"enum": ["sequential", "parallel"]},
+    "steps": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["operation"],
+        "properties": {
+          "operation": {"type": "string", "pattern": "^sezu\\."},
+          "target": {"type": "string"},
+          "args": {"type": "object"},
+          "depends_on": {"type": "array", "items": {"type": "integer", "minimum": 0}}
+        }
+      }
+    }
+  }
+}

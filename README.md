@@ -15,7 +15,7 @@ Default branch:      main
 
 SEZU gives ChatGPT and other authorized MCP clients direct control of the Ubuntu host, the privileged Incus system container `u`, additional containers and VMs, durable jobs, reconnectable terminals, unrestricted files and artifacts, reusable skills, persistent browser profiles, workspaces, capability packs, service templates, and native Incus resources.
 
-The build remains seven phases (`0` through `6`), uses exactly one public MCP tool, and adds no nonfunctional governance or ceremony layer, automatic rollback, or public MCP listener.
+The build remains seven phases (`0` through `6`), uses exactly one public MCP tool, and adds no approval system, command policy, audit framework, evidence subsystem, report generator, mandatory rehearsal, automatic rollback, or public MCP listener.
 
 ## Canonical documents
 

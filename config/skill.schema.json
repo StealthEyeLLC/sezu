@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://sezu.local/schema/skill.schema.json",
+  "title": "SEZU Skill",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["name", "version", "entrypoint"],
+  "properties": {
+    "name": {"type": "string", "pattern": "^[a-z0-9][a-z0-9._-]{0,127}$"},
+    "version": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "entrypoint": {"type": "string", "minLength": 1},
+    "default_target": {"type": "string"},
+    "required_packs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "assets": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "environment": {"type": "object", "additionalProperties": {"type": "string"}}
+  }
+}

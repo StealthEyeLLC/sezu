@@ -1,0 +1,75 @@
+version: 1
+product: sezu
+release: 0.1.0
+public_tool: call_sezu
+namespace: sezu.*
+protocol: SEZU1/1.0.0
+
+base_packs:
+  - sezu-core
+  - data-core
+  - document-core
+  - wasm-core
+  - network-core
+  - machine-image-core
+  - cross-build-core
+
+on_demand_packs:
+  - language-bun
+  - language-deno
+  - language-dotnet
+  - language-php
+  - language-kotlin
+  - language-julia
+  - language-r
+  - language-elixir-erlang
+  - language-lua
+  - language-dart
+  - language-powershell
+  - language-swift
+  - language-fortran
+  - language-haskell
+  - language-ocaml
+  - language-scala
+  - language-clojure
+  - data-spark
+  - cad-3d
+  - binary-firmware
+  - cloud-aws
+  - cloud-azure
+  - cloud-gcp
+  - cloud-cloudflare
+  - storage-extra
+
+service_templates:
+  - service-postgresql
+  - service-mariadb
+  - service-redis
+  - service-mongodb
+  - service-clickhouse
+  - service-qdrant
+  - service-meilisearch
+  - service-opensearch
+  - service-rabbitmq
+  - service-nats
+  - service-redpanda
+  - service-minio
+  - service-oci-registry
+  - service-smtp-dev
+  - service-dns
+  - service-http
+  - service-reverse-proxy
+
+excluded:
+  - local-models
+  - local-ai-inference
+  - local-transcription
+  - android-sdk
+  - android-emulator
+  - android-builds
+  - nonfunctional-governance
+  - approval-systems
+  - policy-engines
+  - automatic-rollback
+  - public-mcp-ingress
+  - extra-build-phases
