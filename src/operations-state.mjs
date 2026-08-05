@@ -103,8 +103,8 @@ async function copyHostToTarget(source, destination, preserve = true) {
   }
 }
 
-async function materializeSource(source, staging, record) {
-  await fsp.rm(staging, { recursive: true, force: true });
+async function materializeSource(source, staging, record, resume = false) {
+  if (!resume) await fsp.rm(staging, { recursive: true, force: true });
   if (source.kind === 'target') await copyTargetToHost(source, staging, record.preserve);
   else if (source.kind === 'artifact') {
     const p = artifactPath(source.artifact_id); if (!(await exists(p.file))) throw new SezuError('artifact_not_found', `artifact not found: ${source.artifact_id}`); await fsp.copyFile(p.file, staging);
@@ -138,11 +138,11 @@ async function commandExists(name) {
   const r = await runProcess(['/bin/sh', '-c', 'command -v "$1" >/dev/null 2>&1', 'sh', name]); const ok = r.code === 0; await fsp.rm(r.tempDir, { recursive: true, force: true }); return ok;
 }
 
-async function runTransfer(runtime, record) {
+async function runTransfer(runtime, record, options = {}) {
   const p = transferPaths(record.transfer_id);
   record.state = 'running'; record.updated_at = now(); await atomicJson(p.metadata, record);
   try {
-    const staging = await materializeSource(record.source, p.staging, record);
+    const staging = await materializeSource(record.source, p.staging, record, options.resume === true);
     const stat = await fsp.stat(staging);
     record.bytes_total = stat.isFile() ? stat.size : null;
     const delivered = await deliverDestination(staging, record.destination, record);
@@ -244,7 +244,7 @@ export function registerStateOperations(runtime) {
     await atomicJson(p.metadata, record); const completed = await runTransfer(this, record); return { status: completed.state, handle: id, result: completed };
   }, { family: 'transfer' });
   runtime.register('sezu.transfer.status', async args => ({ status: (await getTransfer(required(args, 'transfer_id', 'string'))).record.state, handle: args.transfer_id, result: (await getTransfer(args.transfer_id)).record }), { mutating: false, family: 'transfer' });
-  runtime.register('sezu.transfer.resume', async function (args) { const t = await getTransfer(required(args, 'transfer_id', 'string')); if (t.record.state === 'completed') return { status: 'completed', handle: t.record.transfer_id, result: t.record }; t.record.error = null; return { status: 'completed', handle: t.record.transfer_id, result: await runTransfer(this, t.record) }; }, { family: 'transfer' });
+  runtime.register('sezu.transfer.resume', async function (args) { const t = await getTransfer(required(args, 'transfer_id', 'string')); if (t.record.state === 'completed') return { status: 'completed', handle: t.record.transfer_id, result: t.record }; t.record.error = null; return { status: 'completed', handle: t.record.transfer_id, result: await runTransfer(this, t.record, { resume: true }) }; }, { family: 'transfer' });
   runtime.register('sezu.transfer.cancel', async args => { const t = await getTransfer(required(args, 'transfer_id', 'string')); if (t.record.state === 'running') throw new SezuError('transfer_busy', 'synchronous transfer cannot be cancelled between atomic filesystem operations; retry after the current operation returns'); t.record.state = 'cancelled'; t.record.cancelled_at = now(); await atomicJson(t.metadata, t.record); if (args.remove_partial) await fsp.rm(t.staging, { recursive: true, force: true }); return { status: 'cancelled', handle: t.record.transfer_id, result: t.record }; }, { family: 'transfer' });
   runtime.register('sezu.source.import', async function (args, target) { return await this.handlers.get('sezu.transfer.start').call(this, { source: args.source || args, destination: args.destination || { target, path: required(args, 'path', 'string') }, preserve: args.preserve }, target, { operation: 'sezu.transfer.start' }); }, { family: 'transfer' });
   runtime.register('sezu.source.export', async function (args, target) { return await this.handlers.get('sezu.transfer.start').call(this, { source: args.source || { target, path: required(args, 'path', 'string') }, destination: required(args, 'destination'), preserve: args.preserve }, target, { operation: 'sezu.transfer.start' }); }, { family: 'transfer' });

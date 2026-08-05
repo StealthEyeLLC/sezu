@@ -281,7 +281,14 @@ export function registerCoreOperations(runtime) {
     return { result: await targetJson(target, script, [pid]) };
   }, { mutating: false, family: 'process' });
   runtime.register('sezu.process.tree', async (args, target) => {
-    const argv = ['ps', '-eo', 'pid,ppid,uid,stat,ni,psr,comm,args', '--forest']; if (args.pid) argv.push('--ppid', String(args.pid), '-p', String(args.pid));
+    const argv = ['ps', '-o', 'pid,ppid,uid,stat,ni,psr,comm,args', '--forest'];
+    if (args.pid) {
+      const rootPid = String(required(args, 'pid'));
+      const script = `import json,os,sys\nroot=int(sys.argv[1])\nparents={}\nfor name in os.listdir('/proc'):\n if not name.isdigit(): continue\n try:\n  text=open('/proc/'+name+'/stat', encoding='utf-8').read()\n  tail=text[text.rfind(')')+2:].split()\n  parents[int(name)]=int(tail[1])\n except Exception: pass\nchildren={}\nfor pid,ppid in parents.items(): children.setdefault(ppid,[]).append(pid)\nout=[]; stack=[root]\nwhile stack:\n pid=stack.pop()\n if pid in out: continue\n out.append(pid); stack.extend(reversed(sorted(children.get(pid,[]))))\nprint(json.dumps(out))`;
+      const pids = await targetJson(target, script, [rootPid]);
+      if (!pids.length || !pids.includes(Number(rootPid))) throw new SezuError('process_not_found', `process not found: ${rootPid}`);
+      argv.push('-p', pids.join(','));
+    } else argv.splice(1, 0, '-e');
     const r = await targetRun(target, argv); return { stdout: r.stdout.toString('utf8'), result: { pid: args.pid || null } };
   }, { mutating: false, family: 'process' });
   runtime.register('sezu.process.signal', async (args, target) => await pathCommand(target, ['kill', `-${String(required(args, 'signal'))}`, String(required(args, 'pid'))]), { family: 'process' });
