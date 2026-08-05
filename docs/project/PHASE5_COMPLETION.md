@@ -1,7 +1,7 @@
 # Phase 5 Completion Record
 
 Date: 2026-08-05
-Status: Complete, with credential rotation pending
+Status: Complete
 Phase boundary: Phase 6 has not started
 
 ## Delivered state
@@ -42,8 +42,14 @@ The Phase 5 validation script passed all gates:
 
 Repository source checks, unit tests, and runtime build also passed. The permanent activation fixes were pushed at commit `b0d4b265d1d836fa76f817ecc1bb88d9cc5450cf`.
 
-## Required credential rotation
+## Credential rotation completion
 
-The current runtime API key was exposed in conversation history and must be treated as compromised. After a replacement OpenAI runtime key is issued with Tunnels Read and Use permissions, install the replacement on the VPS, verify tunnel reconnection and a live `sezu.health` call, then revoke the exposed key. Replace or delete the GitHub Actions secret named `RUNTIME` if it contains the exposed key.
+A replacement OpenAI runtime key was delivered through the GitHub Actions secret named `RUNTIME`, validated with the tunnel client, installed on the VPS, and loaded by a controlled tunnel restart.
 
-No API key value is recorded in this repository.
+- Rotation workflow result: success.
+- Restarted tunnel process: PID `128833`, active from `2026-08-05 05:28:48 UTC`.
+- Post-rotation local Phase 5 validation: passed.
+- Post-rotation live remote `sezu.health`: passed; request `0dec6051-fea3-406a-9c4e-b4cd1034a9a4`.
+- Live-rotation installer support was committed at `3eafd3840cbcdfa214275bb69007979898102d3b`.
+
+The superseded key remains subject to provider-side revocation because its value appeared in conversation history. No API key value is recorded in this repository.
