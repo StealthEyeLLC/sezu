@@ -1,0 +1,26 @@
+{
+  "name": "call_sezu",
+  "description": "Execute one native SEZU operation.",
+  "inputSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "required": [
+      "operation"
+    ],
+    "properties": {
+      "operation": {
+        "type": "string"
+      },
+      "target": {
+        "type": "string",
+        "description": "u | host | cell:<name>"
+      },
+      "args": {
+        "type": "object"
+      },
+      "idempotency_key": {
+        "type": "string"
+      }
+    }
+  }
+}

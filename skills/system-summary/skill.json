@@ -1,0 +1,10 @@
+{
+  "name": "system-summary",
+  "version": "0.1.0",
+  "description": "Return a concise real host or Incus target summary through ordinary SEZU operations.",
+  "entrypoint": "entrypoint.sh",
+  "default_target": "host",
+  "required_packs": [],
+  "assets": [],
+  "environment": {}
+}

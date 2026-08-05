@@ -1,0 +1,20 @@
+[Unit]
+Description=SEZU root supervisor
+After=local-fs.target incus.service
+Wants=incus.service
+
+[Service]
+Type=simple
+User=root
+Group=sezu
+Environment=PATH=/opt/sezu/toolchains/node/24.19.0/bin:/opt/incus/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+RuntimeDirectory=sezu
+RuntimeDirectoryMode=0770
+ExecStart=/opt/sezu/toolchains/node/24.19.0/bin/node /opt/sezu/current/src/supervisor.mjs
+Restart=on-failure
+RestartSec=1s
+KillMode=mixed
+TimeoutStopSec=30s
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,19 @@
+[Unit]
+Description=SEZU outbound OpenAI MCP tunnel
+After=network-online.target sezu-supervisor.service
+Wants=network-online.target
+Requires=sezu-supervisor.service
+ConditionPathExists=/etc/sezu/credentials/tunnel-client.yaml
+
+[Service]
+Type=simple
+User=sezu-tunnel
+Group=sezu-tunnel
+SupplementaryGroups=sezu
+ExecStartPre=/usr/bin/test -S /run/sezu/supervisor.sock
+ExecStart=/opt/sezu/current/scripts/run-tunnel.sh
+Restart=on-failure
+RestartSec=2s
+
+[Install]
+WantedBy=multi-user.target

@@ -28,3 +28,23 @@ The build remains seven phases (`0` through `6`), uses exactly one public MCP to
 ## Build rule
 
 Phase 0 resolves every moving upstream input into exact stable versions, immutable URLs, package locks, and digests. Later phases consume only those committed locks. Alpha, beta, release-candidate, nightly, moving-branch, and `latest` inputs are excluded.
+
+
+## Local runtime
+
+Phase 4 installs the immutable `0.1.0` release at `/opt/sezu/releases/0.1.0` and points `/opt/sezu/current` to it. The enabled root supervisor owns `/run/sezu/supervisor.sock`; both the local `sezu` command and the unprivileged direct-stdio gateway submit requests through that socket.
+
+```bash
+sezu --version
+sezu sezu.health --json
+sezu sezu.exec --target u --args-json '{"argv":["/usr/bin/id"]}' --json
+sezu sezu.exec --target host --args-json '{"argv":["/usr/bin/id"]}' --json
+```
+
+The gateway executable is `/usr/local/bin/sezu-gateway` and exposes exactly one MCP tool, `call_sezu`, over stdin/stdout. `sezu-tunnel.service` is installed for Phase 5 but remains disabled and inactive until real tunnel credentials are supplied. No TCP or HTTP listener is part of the Phase 4 runtime.
+
+The direct installed-state check is:
+
+```bash
+/opt/sezu/current/scripts/phase4-sezu-check.sh
+```
