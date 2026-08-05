@@ -1,5 +1,5 @@
 {
-  "all_python_cached_package_count": 298,
+  "all_python_cached_package_count": 308,
   "base_apt_root_count": 145,
   "base_direct_count": 17,
   "base_npm_package_count": 466,
@@ -15,7 +15,7 @@
   ],
   "base_python_environments": {
     "data-core": {
-      "package_count": 194,
+      "package_count": 205,
       "roots": {
         "conan": "2.31.1",
         "dask": "2026.7.1",
@@ -48,7 +48,7 @@
       }
     }
   },
-  "base_python_package_count": 221,
+  "base_python_package_count": 232,
   "base_python_root_count": 23,
   "build_instance": "u-build",
   "golden_alias": "sezu-u-golden-0.1.0",

@@ -142,22 +142,34 @@ def python_select_node(dep: dict, exact: dict, by_name: dict) -> dict:
 
 def python_closure(root_versions: dict[str, str], uv: dict) -> list[dict]:
     exact, by_name = python_index(uv)
-    queue: deque[dict] = deque()
+    queue: deque[tuple[dict, frozenset[str]]] = deque()
     for name, version in sorted(root_versions.items()):
         key = (canonicalize_name(name), str(version))
         if key not in exact:
             raise RuntimeError(f"Python root missing from lock: {key}")
-        queue.append(exact[key])
+        queue.append((exact[key], frozenset()))
     seen: dict[tuple[str, str], dict] = {}
+    processed_extras: dict[tuple[str, str], set[str]] = {}
     while queue:
-        p = queue.popleft()
+        p, requested_extras = queue.popleft()
         key = (canonicalize_name(p["name"]), str(p["version"]))
-        if key in seen:
+        first_visit = key not in seen
+        if first_visit:
+            seen[key] = p
+        already_processed = processed_extras.setdefault(key, set())
+        new_extras = set(requested_extras) - already_processed
+        if not first_visit and not new_extras:
             continue
-        seen[key] = p
-        for dep in p.get("dependencies", []):
-            if marker_applies(dep.get("marker")):
-                queue.append(python_select_node(dep, exact, by_name))
+        if first_visit:
+            for dep in p.get("dependencies", []):
+                if marker_applies(dep.get("marker")):
+                    queue.append((python_select_node(dep, exact, by_name), frozenset(map(str, dep.get("extra", [])))))
+        optional = p.get("optional-dependencies", {})
+        for extra in sorted(new_extras):
+            for dep in optional.get(extra, []):
+                if marker_applies(dep.get("marker")):
+                    queue.append((python_select_node(dep, exact, by_name), frozenset(map(str, dep.get("extra", [])))))
+        already_processed.update(new_extras)
     return [seen[k] for k in sorted(seen)]
 
 
