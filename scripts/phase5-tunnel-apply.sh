@@ -8,7 +8,7 @@ client=/opt/sezu/toolchains/tunnel-client/0.0.10/tunnel-client
 health_socket=/run/sezu/tunnel-health.sock
 node=/opt/sezu/toolchains/node/24.19.0/bin/node
 gateway=/opt/sezu/current/src/gateway.mjs
-mcp_command="command=$node $gateway,channel=sezu"
+mcp_command="command=$node $gateway,channel=main"
 config_source=${SEZU_TUNNEL_CONFIG_SOURCE:-}
 key_source=${SEZU_TUNNEL_KEY_SOURCE:-}
 tunnel_id=${SEZU_TUNNEL_ID:-}
@@ -44,9 +44,10 @@ case "$version" in
 esac
 systemctl is-active --quiet sezu-supervisor.service || { echo 'sezu-supervisor.service is not active' >&2; exit 1; }
 [ -S /run/sezu/supervisor.sock ] || { echo 'supervisor socket is missing' >&2; exit 1; }
-getent group sezu-tunnel >/dev/null
+getent group sezu >/dev/null
 id sezu-tunnel >/dev/null
-install -d -o root -g sezu-tunnel -m 0750 "$credential_dir"
+install -d -o root -g sezu -m 0750 /etc/sezu
+install -d -o root -g sezu -m 0750 "$credential_dir"
 
 tmp_config=
 tmp_doctor=
@@ -60,7 +61,7 @@ if [ -n "$key_source" ]; then
   [ -f "$key_source" ] || { echo "runtime key source is missing: $key_source" >&2; exit 1; }
   [ -s "$key_source" ] || { echo 'runtime key source is empty' >&2; exit 1; }
   if [ ! -f "$key_path" ] || ! cmp -s "$key_source" "$key_path"; then
-    install -o root -g sezu-tunnel -m 0640 "$key_source" "$key_path"
+    install -o root -g sezu -m 0640 "$key_source" "$key_path"
   fi
 elif [ ! -s "$key_path" ]; then
   echo 'no runtime key is installed; provide --runtime-key-file' >&2
@@ -74,7 +75,7 @@ fi
 if [ -n "$config_source" ]; then
   [ -f "$config_source" ] || { echo "configuration source is missing: $config_source" >&2; exit 1; }
   if [ ! -f "$config_path" ] || ! cmp -s "$config_source" "$config_path"; then
-    install -o root -g sezu-tunnel -m 0640 "$config_source" "$config_path"
+    install -o root -g sezu -m 0640 "$config_source" "$config_path"
   fi
 elif [ -n "$tunnel_id" ]; then
   case "$tunnel_id" in
@@ -97,17 +98,17 @@ elif [ -n "$tunnel_id" ]; then
     printf '  level: info\n'
     printf '  format: json\n'
   } > "$tmp_config"
-  chown root:sezu-tunnel "$tmp_config"
+  chown root:sezu "$tmp_config"
   chmod 0640 "$tmp_config"
   if [ ! -f "$config_path" ] || ! cmp -s "$tmp_config" "$config_path"; then
-    install -o root -g sezu-tunnel -m 0640 "$tmp_config" "$config_path"
+    install -o root -g sezu -m 0640 "$tmp_config" "$config_path"
   fi
 elif [ ! -f "$config_path" ]; then
   echo 'no tunnel configuration is installed; provide --config or --tunnel-id' >&2
   exit 1
 fi
 
-chown root:sezu-tunnel "$config_path" "$key_path"
+chown root:sezu "$config_path" "$key_path"
 chmod 0640 "$config_path" "$key_path"
 
 python3 - "$config_path" <<'PY'

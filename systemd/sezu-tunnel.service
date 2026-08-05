@@ -8,7 +8,7 @@ ConditionPathExists=/etc/sezu/credentials/tunnel-client.yaml
 [Service]
 Type=simple
 User=sezu-tunnel
-Group=sezu-tunnel
+Group=sezu
 SupplementaryGroups=sezu
 ExecStartPre=/usr/bin/test -S /run/sezu/supervisor.sock
 ExecStart=/opt/sezu/current/scripts/run-tunnel.sh

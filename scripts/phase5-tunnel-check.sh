@@ -14,9 +14,10 @@ expected='0.0.10+105e17a79a36e4e5c897fd698ed2b8dbf935b144 (git sha: 105e17a79a36
 [ "$($client --version)" = "$expected" ] || fail tunnel-client
 pass identity
 
-[ "$(stat -c '%U:%G:%a' /etc/sezu/credentials)" = root:sezu-tunnel:750 ] || fail credential-directory
-[ "$(stat -c '%U:%G:%a' "$config")" = root:sezu-tunnel:640 ] || fail tunnel-config-mode
-[ "$(stat -c '%U:%G:%a' "$key")" = root:sezu-tunnel:640 ] || fail tunnel-key-mode
+[ "$(stat -c '%U:%G:%a' /etc/sezu)" = root:sezu:750 ] || fail config-directory
+[ "$(stat -c '%U:%G:%a' /etc/sezu/credentials)" = root:sezu:750 ] || fail credential-directory
+[ "$(stat -c '%U:%G:%a' "$config")" = root:sezu:640 ] || fail tunnel-config-mode
+[ "$(stat -c '%U:%G:%a' "$key")" = root:sezu:640 ] || fail tunnel-key-mode
 [ -s "$key" ] || fail tunnel-key-empty
 python3 - "$config" <<'PY' || exit 1
 import re,sys,yaml
@@ -44,7 +45,7 @@ pass local-runtime
 systemctl is-enabled --quiet sezu-tunnel.service || fail tunnel-enabled
 systemctl is-active --quiet sezu-tunnel.service || fail tunnel-active
 [ "$(systemctl show sezu-tunnel.service -p User --value)" = sezu-tunnel ] || fail tunnel-user
-[ "$(systemctl show sezu-tunnel.service -p Group --value)" = sezu-tunnel ] || fail tunnel-group
+[ "$(systemctl show sezu-tunnel.service -p Group --value)" = sezu ] || fail tunnel-group
 case " $(systemctl show sezu-tunnel.service -p SupplementaryGroups --value) " in *' sezu '*) ;; *) fail tunnel-supplementary-group;; esac
 [ -S "$health" ] || fail tunnel-health-socket
 curl --unix-socket "$health" -fsS http://localhost/healthz >/dev/null || fail tunnel-health
@@ -52,7 +53,7 @@ curl --unix-socket "$health" -fsS http://localhost/readyz >/dev/null || fail tun
 main_pid=$(systemctl show sezu-tunnel.service -p MainPID --value)
 [ "$main_pid" -gt 1 ] || fail tunnel-main-pid
 tr '\0' ' ' < "/proc/$main_pid/cmdline" | grep -Fq '/opt/sezu/toolchains/tunnel-client/0.0.10/tunnel-client run' || fail tunnel-command
-tr '\0' ' ' < "/proc/$main_pid/cmdline" | grep -Fq 'channel=sezu' || fail tunnel-channel
+tr '\0' ' ' < "/proc/$main_pid/cmdline" | grep -Fq 'channel=main' || fail tunnel-channel
 pgrep -P "$main_pid" -a | grep -Fq '/opt/sezu/current/src/gateway.mjs' || fail gateway-child
 pass tunnel-runtime
 
