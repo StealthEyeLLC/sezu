@@ -95,7 +95,16 @@ export function registerIncusOperations(runtime) {
   runtime.register('sezu.cell.restart', state('restart'), { family: 'cell' });
   runtime.register('sezu.cell.pause', state('freeze'), { family: 'cell' });
   runtime.register('sezu.cell.resume', state('unfreeze'), { family: 'cell' });
-  runtime.register('sezu.cell.delete', async (args, target) => await api('DELETE', `/1.0/instances/${esc(instanceName(args, target))}`, args), { family: 'cell' });
+  runtime.register('sezu.cell.delete', async (args, target) => {
+    const name = instanceName(args, target);
+    if (args.force) {
+      const current = await getObject(`/1.0/instances/${esc(name)}/state`, args);
+      if (current.status === 'Running' || current.status === 'Frozen') {
+        await api('PUT', `/1.0/instances/${esc(name)}/state`, args, { action: 'stop', timeout: args.action_timeout ?? 30, force: true, stateful: false });
+      }
+    }
+    return await api('DELETE', `/1.0/instances/${esc(name)}`, args);
+  }, { family: 'cell' });
   runtime.register('sezu.cell.console', async (args, target) => await api('POST', `/1.0/instances/${esc(instanceName(args, target))}/console`, { ...args, wait: false }, { width: args.cols || 120, height: args.rows || 40, type: args.console_type || 'console' }), { family: 'cell' });
   runtime.register('sezu.cell.exec', async (args, target) => {
     const name = instanceName(args, target); const command = args.argv || args.command; if (!Array.isArray(command) || !command.length) throw new SezuError('invalid_request', 'argv array is required');
