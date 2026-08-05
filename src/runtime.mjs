@@ -79,7 +79,7 @@ export class Runtime {
     if (request.operation === 'sezu.terminal.create' && args.cwd === undefined && active.path) args.cwd = active.path;
     if (request.operation === 'sezu.browser.open' && !args.profile && active.browser_profile) args.profile = active.browser_profile;
     if (request.operation === 'sezu.browser.run' && !args.profile && !args.session_id && active.browser_profile) args.profile = active.browser_profile;
-    if (request.operation === 'sezu.template.launch' && !args.name && active.task_template) args.name = active.task_template;
+    if (request.operation === 'sezu.template.launch' && !args.template_id && active.task_template) args.template_id = active.task_template;
     return { ...request, args };
   }
 

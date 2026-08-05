@@ -25,6 +25,8 @@ test('workspace defaults merge execution context and preserve explicit overrides
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.browser.open', args: {} }, active).args.profile, 'workspace-browser');
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.browser.open', args: { session_id: 'named-session' } }, active).args.profile, 'workspace-browser');
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.browser.run', args: {} }, active).args.profile, 'workspace-browser');
-  assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.template.launch', args: {} }, active).args.name, 'task-default');
+  const template = runtime.applyWorkspaceDefaults({ operation: 'sezu.template.launch', args: { name: 'caller-cell' } }, active);
+  assert.equal(template.args.template_id, 'task-default');
+  assert.equal(template.args.name, 'caller-cell');
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.terminal.create', args: {} }, active).args.cwd, '/work/demo');
 });
