@@ -18,6 +18,9 @@ test("binary-firmware carries Binwalk build dependencies and builds offline", ()
   assert.match(installer, /503a066b4c037c440169d995b869046827dbc71263f6e8f3be6d77d4f3229dbd/);
   assert.match(installer, /CARGO_HOME=\/cache\/sezu\/package-managers\/cargo/);
   assert.match(installer, /\*\.deb\) dpkg-deb -x/);
+  assert.match(installer, /aws-session-manager-plugin\) executable=session-manager-plugin/);
+  assert.match(installer, /export LD_LIBRARY_PATH/);
+  assert.match(installer, /export R2_PREFIX/);
   const forge = fs.readFileSync(new URL("../../scripts/phase3-forge-container.sh", import.meta.url), "utf8");
   assert.match(forge, /cargo fetch --manifest-path "\$source\/Cargo\.toml" --locked/);
 });

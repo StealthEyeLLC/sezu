@@ -115,8 +115,31 @@ PY
   CARGO_HOME=/cache/sezu/package-managers/cargo cargo build \
     --manifest-path "$root/Cargo.toml" --locked --offline --release --ignore-rust-version
 fi
-candidate=$(find "$root" -maxdepth 4 -type f -perm /111 \( -name "$component" -o -name "$component.exe" \) -print -quit)
+executable=$component
+case "$component" in
+  radare2) executable=radare2 ;;
+  aws-session-manager-plugin) executable=session-manager-plugin ;;
+  azure-cli) executable=az ;;
+  gitlab-cli) executable=glab ;;
+esac
+candidate=$(find "$root" -maxdepth 5 -type f -perm /111 \( -name "$executable" -o -name "$executable.exe" \) -print -quit)
 if [ -n "$candidate" ]; then
-  ln -sfn "$candidate" "/usr/local/bin/$component"
+  if [[ "$artifact" = *.deb ]]; then
+    wrapper="/usr/local/bin/$executable"
+    {
+      printf '#!/bin/sh\n'
+      printf 'root=%q\n' "$root"
+      printf 'export PATH="$root/bin:$PATH"\n'
+      printf 'export LD_LIBRARY_PATH="$root/lib:$root/lib/x86_64-linux-gnu${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}"\n'
+      printf 'export XDG_DATA_DIRS="$root/share:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"\n'
+      if [ "$component" = radare2 ]; then printf 'export R2_PREFIX="$root"\n'; fi
+      printf 'exec %q "$@"\n' "$candidate"
+    } > "$wrapper"
+    chmod 0755 "$wrapper"
+    if [ "$executable" != "$component" ]; then ln -sfn "$wrapper" "/usr/local/bin/$component"; fi
+  else
+    ln -sfn "$candidate" "/usr/local/bin/$executable"
+    if [ "$executable" != "$component" ]; then ln -sfn "$candidate" "/usr/local/bin/$component"; fi
+  fi
 fi
 printf '{"component":"%s","version":"%s","sha256":"%s","installed_at":"%s"}\n' "$component" "$version" "$digest" "$(date --iso-8601=seconds)" > "$root/.sezu-installed.json"
