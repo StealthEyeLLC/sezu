@@ -33,6 +33,7 @@ ensure_host_firewall() {
     ufw allow in on sezu-br0 proto udp to any port 53 comment 'SEZU Incus DNS UDP' >/dev/null
     ufw allow in on sezu-br0 proto tcp to any port 53 comment 'SEZU Incus DNS TCP' >/dev/null
     ufw route allow in on sezu-br0 out on "$wan" comment 'SEZU Incus outbound' >/dev/null
+    ufw route allow in on sezu-br0 out on sezu-br0 comment 'SEZU Incus internal' >/dev/null
     ufw reload >/dev/null
   fi
 }

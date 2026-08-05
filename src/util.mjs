@@ -237,6 +237,13 @@ export function failureEnvelope(request, target, error) {
   };
 }
 
+export function normalizeIncusJsonBody(method, requestPath, body) {
+  if (String(method).toUpperCase() === 'POST' && requestPath === '/1.0/images' && body && !Buffer.isBuffer(body) && typeof body === 'object' && !Array.isArray(body) && body.expires_at === undefined) {
+    return { ...body, expires_at: new Date(0).toISOString() };
+  }
+  return body;
+}
+
 export async function incusRequest(method, requestPath, options = {}) {
   if (typeof requestPath !== 'string' || !requestPath.startsWith('/1.0')) throw new SezuError('invalid_request', 'Incus path must begin with /1.0');
   let p = requestPath;
@@ -245,9 +252,10 @@ export async function incusRequest(method, requestPath, options = {}) {
   if ([...query].length) p += (p.includes('?') ? '&' : '?') + query.toString();
   let body = null;
   const headers = { Accept: 'application/json', ...(options.headers || {}) };
-  if (options.body !== undefined && options.body !== null) {
-    body = Buffer.isBuffer(options.body) ? options.body : Buffer.from(JSON.stringify(options.body));
-    if (!headers['Content-Type']) headers['Content-Type'] = Buffer.isBuffer(options.body) ? 'application/octet-stream' : 'application/json';
+  const requestBody = normalizeIncusJsonBody(method, requestPath, options.body);
+  if (requestBody !== undefined && requestBody !== null) {
+    body = Buffer.isBuffer(requestBody) ? requestBody : Buffer.from(JSON.stringify(requestBody));
+    if (!headers['Content-Type']) headers['Content-Type'] = Buffer.isBuffer(requestBody) ? 'application/octet-stream' : 'application/json';
     headers['Content-Length'] = String(body.length);
   }
   return await new Promise((resolve, reject) => {

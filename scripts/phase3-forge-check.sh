@@ -29,6 +29,8 @@ if command -v ufw >/dev/null 2>&1; then
     grep -E '67/udp on sezu-br0.*ALLOW' <<<"$ufw_status" >/dev/null
     grep -E '53/udp on sezu-br0.*ALLOW' <<<"$ufw_status" >/dev/null
     grep -E 'ALLOW FWD.*on sezu-br0' <<<"$ufw_status" >/dev/null
+    iptables -C ufw-user-forward -i "$BRIDGE" -o "$BRIDGE" -j ACCEPT
+    ip6tables -C ufw6-user-forward -i "$BRIDGE" -o "$BRIDGE" -j ACCEPT
   fi
 fi
 pass phase2-prerequisites
@@ -38,6 +40,8 @@ u_info=$(incus info u --project "$PROJECT")
 grep -Fx 'Status: RUNNING' <<<"$u_info" >/dev/null
 golden=$(incus image info "$ALIAS" --project "$PROJECT" | awk '$1=="Fingerprint:" {print $2}')
 test "$golden" = "$(python3 -c 'import json; print(json.load(open("config/forge/phase3.json"))["golden_fingerprint"])')"
+golden_expiry=$(incus image list "$golden" --project "$PROJECT" --format json | jq -r '.[0].expires_at')
+case "$golden_expiry" in '0001-01-01T00:00:00Z'|'0001-01-01T00:00:00.000000000Z') ;; *) exit 1;; esac
 python3 - <<PY
 import json,subprocess
 x=json.loads(subprocess.check_output(['incus','query','/1.0/instances/u?project=$PROJECT'],text=True))
