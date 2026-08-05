@@ -50,57 +50,6 @@ python3 -m venv "$root"
 "$root/bin/pip" install --no-index --find-links "$stage" "$package==$version"`;
 }
 
-const BINWALK_RUST_VERSION = '1.97.0';
-const BINWALK_RUST_TARGET = 'x86_64-unknown-linux-gnu';
-const BINWALK_RUST_CACHE = `/var/cache/sezu/sources/rust/${BINWALK_RUST_VERSION}/${BINWALK_RUST_TARGET}`;
-const BINWALK_CARGO_CACHE = '/var/cache/sezu/sources/cargo/binwalk/3.1.0';
-
-export function binwalkBuildScript() {
-  return `set -euo pipefail
-stage=$1
-rust_version=$2
-rust_target=$3
-source_root=/opt/sezu/toolchains/binwalk/3.1.0
-rust_root=/opt/sezu/toolchains/rust/$rust_version
-extract=$stage/extract
-cargo_home=$stage/cargo-home
-rm -rf "$extract" "$rust_root" "$source_root/target"
-mkdir -p "$extract" "$cargo_home" "$rust_root"
-for archive in "$stage"/*.tar.xz; do tar -xJf "$archive" -C "$extract"; done
-for component in rustc rust-std cargo; do
-  "$extract/$component-$rust_version-$rust_target/install.sh" --prefix="$rust_root" --disable-ldconfig >/dev/null
-done
-export PATH="$rust_root/bin:$PATH"
-export CARGO_HOME="$cargo_home"
-export RUST_FONTCONFIG_DLOPEN=1
-cd "$source_root"
-cargo build --release --locked --offline
-install -m 0755 target/release/binwalk "$source_root/binwalk"
-ln -sfn "$source_root/binwalk" /usr/local/bin/binwalk
-"$source_root/binwalk" --help >/dev/null
-rm -rf "$source_root/target" "$rust_root"`;
-}
-
-async function buildLockedBinwalk(runtime, target, timeoutMs) {
-  const stage = `/tmp/sezu-binwalk-build-${uuid()}`;
-  const archives = ['rustc', 'rust-std', 'cargo'].map(component => `${component}-${BINWALK_RUST_VERSION}-${BINWALK_RUST_TARGET}.tar.xz`);
-  try {
-    for (const archive of archives) {
-      const source = path.join(BINWALK_RUST_CACHE, archive);
-      if (!(await exists(source))) throw new SezuError('locked_artifact_missing', `missing locked Rust build artifact: ${source}`);
-      await copyHostToTarget(source, { kind: 'target', target, path: path.join(stage, archive) }, false);
-    }
-    if (!(await exists(BINWALK_CARGO_CACHE))) throw new SezuError('locked_artifact_missing', `missing locked Binwalk Cargo cache: ${BINWALK_CARGO_CACHE}`);
-    await copyHostToTarget(BINWALK_CARGO_CACHE, { kind: 'target', target, path: path.join(stage, 'cargo-home') }, false);
-    await call(runtime, 'sezu.exec', target, {
-      argv: ['/bin/bash', '-lc', binwalkBuildScript(), 'bash', stage, BINWALK_RUST_VERSION, BINWALK_RUST_TARGET],
-      timeout_ms: timeoutMs || 1200000
-    });
-  } finally {
-    try { await call(runtime, 'sezu.file.remove', target, { path: stage, recursive: true }); } catch {}
-  }
-}
-
 async function call(runtime, operation, target, args) {
   const response = await runtime.dispatch({ operation, target, args, request_id: uuid() });
   if (!response.ok) throw new SezuError(response.error?.code || 'operation_failed', response.error?.message || `${operation} failed`, response.error?.details);
@@ -492,7 +441,6 @@ export function registerStateOperations(runtime) {
             await copyHostToTarget('/opt/sezu/current/scripts/install-locked-component.sh', { kind: 'target', target, path: script }, false);
             await call(this, 'sezu.file.chmod', target, { path: script, mode: 0o700 });
             await call(this, 'sezu.exec', target, { argv: [script, component.component, String(component.version), component.lock_ref], env: { SEZU_DIRECT_LOCK: '/opt/sezu/locks/0.1.0/direct-artifacts.tsv' }, timeout_ms: args.timeout_ms });
-            if (component.component === 'binwalk') await buildLockedBinwalk(this, target, args.timeout_ms);
           } finally {
             try { await call(this, 'sezu.file.remove', target, { path: script }); } catch {}
           }
