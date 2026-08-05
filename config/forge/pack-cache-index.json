@@ -128,6 +128,13 @@
           "lock_file": "locks/apt-u.tsv",
           "lock_ref": "package=sleuthkit;architecture=amd64",
           "version": "4.12.1+dfsg-1.1ubuntu2"
+        },
+        {
+          "component": "libfontconfig-dev",
+          "ecosystem": "apt",
+          "lock_file": "locks/apt-u.tsv",
+          "lock_ref": "package=libfontconfig-dev;architecture=amd64",
+          "version": "2.15.0-1.1ubuntu2"
         }
       ],
       "placement": "on-demand"

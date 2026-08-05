@@ -34,7 +34,87 @@ if [ "${#entries[@]}" -eq 1 ] && [ -d "${entries[0]}" ]; then
 fi
 rm -rf "$root"
 mv "$stage" "$root"
-candidate=$(find "$root" -maxdepth 3 -type f -perm /111 \( -name "$component" -o -name "$component.exe" \) -print -quit)
+if [ "$component" = binwalk ] && [ "$version" = 3.1.0 ]; then
+  crate=$(find /cache/sezu/package-managers/cargo/registry/src -path '*/yeslogic-fontconfig-sys-6.0.0/src/lib.rs' -print -quit)
+  [ -n "$crate" ] || { echo "locked yeslogic-fontconfig-sys 6.0.0 source is unavailable" >&2; exit 4; }
+  crate=${crate%/src/lib.rs}
+  python3 - "$root" "$crate" <<'PY'
+from pathlib import Path
+import re
+import shutil
+import sys
+
+root = Path(sys.argv[1])
+crate = Path(sys.argv[2])
+patch = root / '.sezu-patches' / 'yeslogic-fontconfig-sys-6.0.0'
+shutil.copytree(crate, patch)
+
+lib = patch / 'src' / 'lib.rs'
+text = lib.read_text(encoding='utf-8')
+text, count = re.subn(
+    r'c"([^"\\]*)"',
+    lambda match: 'unsafe { CStr::from_bytes_with_nul_unchecked(b"' + match.group(1) + '\\0") }',
+    text,
+)
+if count != 58:
+    raise SystemExit(f'expected 58 locked C-string compatibility rewrites, got {count}')
+lib.write_text(text, encoding='utf-8')
+
+manifest = root / 'Cargo.toml'
+text = manifest.read_text(encoding='utf-8')
+patch_block = '\n[patch.crates-io]\nyeslogic-fontconfig-sys = { path = ".sezu-patches/yeslogic-fontconfig-sys-6.0.0" }\n'
+if '[patch.crates-io]' in text:
+    raise SystemExit('unexpected existing Cargo patch section')
+manifest.write_text(text.rstrip() + '\n' + patch_block, encoding='utf-8')
+
+lock = root / 'Cargo.lock'
+lines = lock.read_text(encoding='utf-8').splitlines()
+out = []
+target = False
+removed = []
+for line in lines:
+    if line == '[[package]]':
+        target = False
+    elif line == 'name = "yeslogic-fontconfig-sys"':
+        target = True
+    if target and (line.startswith('source = ') or line.startswith('checksum = ')):
+        removed.append(line)
+        continue
+    out.append(line)
+expected = [
+    'source = "registry+https://github.com/rust-lang/crates.io-index"',
+    'checksum = "503a066b4c037c440169d995b869046827dbc71263f6e8f3be6d77d4f3229dbd"',
+]
+if removed != expected:
+    raise SystemExit(f'unexpected locked crate metadata: {removed!r}')
+lock.write_text('\n'.join(out) + '\n', encoding='utf-8')
+
+common = root / 'src' / 'common.rs'
+text = common.read_text(encoding='utf-8')
+anchor = 'use std::io::Read;\n'
+helper = '''use std::io::Read;\nuse std::path::{Path, PathBuf};\n\n/// Stable equivalent of std::path::absolute for the locked Rust 1.75 toolchain.\npub fn absolute_path(path: impl AsRef<Path>) -> Result<PathBuf, std::io::Error> {\n    let path = path.as_ref();\n    if path.is_absolute() {\n        Ok(path.to_path_buf())\n    } else {\n        Ok(std::env::current_dir()?.join(path))\n    }\n}\n'''
+if anchor not in text or 'pub fn absolute_path' in text:
+    raise SystemExit('unexpected Binwalk common.rs layout')
+common.write_text(text.replace(anchor, helper, 1), encoding='utf-8')
+
+binwalk = root / 'src' / 'binwalk.rs'
+text = binwalk.read_text(encoding='utf-8')
+if text.count('path::absolute') != 2:
+    raise SystemExit('unexpected Binwalk primary absolute-path call count')
+text = text.replace('use crate::common::{is_offset_safe, read_file};', 'use crate::common::{absolute_path, is_offset_safe, read_file};', 1)
+text = text.replace('path::absolute', 'absolute_path')
+binwalk.write_text(text, encoding='utf-8')
+
+extractor = root / 'src' / 'extractors' / 'common.rs'
+text = extractor.read_text(encoding='utf-8')
+if text.count('path::absolute') != 1:
+    raise SystemExit('unexpected Binwalk extractor absolute-path call count')
+extractor.write_text('use crate::common::absolute_path;\n' + text.replace('path::absolute', 'absolute_path'), encoding='utf-8')
+PY
+  CARGO_HOME=/cache/sezu/package-managers/cargo cargo build \
+    --manifest-path "$root/Cargo.toml" --locked --offline --release --ignore-rust-version
+fi
+candidate=$(find "$root" -maxdepth 4 -type f -perm /111 \( -name "$component" -o -name "$component.exe" \) -print -quit)
 if [ -n "$candidate" ]; then
   ln -sfn "$candidate" "/usr/local/bin/$component"
 fi

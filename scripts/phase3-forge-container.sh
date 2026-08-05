@@ -121,6 +121,26 @@ if ! stage_done fetch; then fetch_inputs; mark_done fetch; fi
 if ! stage_done apt_repo; then build_apt_repo; mark_done apt_repo; fi
 if ! stage_done apt; then install_apt; mark_done apt; fi
 
+cache_binwalk_cargo() {
+  log cache_binwalk_cargo
+  local artifact source
+  artifact=$(python3 - <<'PY'
+import json
+for row in json.load(open('/cache/sezu/sources/direct/locked-index.json')):
+    if row['component'] == 'binwalk' and row['version'] == '3.1.0':
+        print(row['cache_path']); break
+else:
+    raise SystemExit('locked Binwalk source is missing')
+PY
+)
+  source=$(mktemp -d /tmp/sezu-binwalk-cargo.XXXXXX)
+  trap 'rm -rf "$source"' RETURN
+  tar -xzf "$artifact" -C "$source" --strip-components=1
+  CARGO_HOME="$CACHE/package-managers/cargo" cargo fetch --manifest-path "$source/Cargo.toml" --locked
+}
+
+if ! stage_done binwalk_cargo; then cache_binwalk_cargo; mark_done binwalk_cargo; fi
+
 artifact_row() {
   python3 - "$1" <<'PY'
 import json,sys
