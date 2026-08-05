@@ -1,0 +1,23 @@
+name: Activate SEZU tunnel
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  activate:
+    if: github.repository == 'StealthEyeLLC/sezu' && github.ref == 'refs/heads/main'
+    runs-on: [self-hosted, linux, x64, sezu-phase5-once]
+    timeout-minutes: 10
+    env:
+      SEZU_TUNNEL_RUNTIME_KEY: ${{ secrets.SEZU_TUNNEL_RUNTIME_KEY }}
+    steps:
+      - name: Install runtime key and activate tunnel
+        shell: bash
+        run: |
+          set -euo pipefail
+          test -n "${SEZU_TUNNEL_RUNTIME_KEY:-}"
+          printf '%s\n' "$SEZU_TUNNEL_RUNTIME_KEY" | sudo -n /usr/local/sbin/sezu-phase5-actions-activate
+          unset SEZU_TUNNEL_RUNTIME_KEY
