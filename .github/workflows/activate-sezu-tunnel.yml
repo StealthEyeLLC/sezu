@@ -12,7 +12,7 @@ jobs:
     runs-on: [self-hosted, linux, x64, sezu-phase5-once]
     timeout-minutes: 10
     env:
-      SEZU_TUNNEL_RUNTIME_KEY: ${{ secrets.SEZU_TUNNEL_RUNTIME_KEY }}
+      SEZU_TUNNEL_RUNTIME_KEY: ${{ secrets.RUNTIME }}
     steps:
       - name: Install runtime key and activate tunnel
         shell: bash
