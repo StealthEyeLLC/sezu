@@ -378,8 +378,14 @@ export function registerStateOperations(runtime) {
       }
       for (const component of pack.components.filter(component => component.ecosystem !== 'apt')) {
         if (component.ecosystem === 'direct') {
-          const script = `/opt/sezu/current/scripts/install-locked-component.sh`;
-          await call(this, 'sezu.exec', target, { argv: [script, component.component, String(component.version), component.lock_ref], timeout_ms: args.timeout_ms });
+          const script = `/tmp/sezu-install-locked-component-${uuid()}.sh`;
+          try {
+            await copyHostToTarget('/opt/sezu/current/scripts/install-locked-component.sh', { kind: 'target', target, path: script }, false);
+            await call(this, 'sezu.file.chmod', target, { path: script, mode: 0o700 });
+            await call(this, 'sezu.exec', target, { argv: [script, component.component, String(component.version), component.lock_ref], env: { SEZU_DIRECT_LOCK: '/opt/sezu/locks/0.1.0/direct-artifacts.tsv' }, timeout_ms: args.timeout_ms });
+          } finally {
+            try { await call(this, 'sezu.file.remove', target, { path: script }); } catch {}
+          }
           installed.push(component);
         } else if (component.ecosystem === 'npm') {
           const root = args.install_root || `/opt/sezu/packs/${id}/node`;
