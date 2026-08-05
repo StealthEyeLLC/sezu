@@ -255,7 +255,7 @@ export function registerStateOperations(runtime) {
     if (format === 'tar' || format === 'tar.gz' || format === 'tgz' || format === 'tar.xz') argv = ['tar', format.includes('gz') || format === 'tgz' ? '-czf' : (format.includes('xz') ? '-cJf' : '-cf'), dest, ...sources];
     else if (format === 'zip') argv = ['zip', '-r', dest, ...sources];
     else if (format === '7z') argv = ['7z', 'a', dest, ...sources];
-    else if (format === 'cpio') argv = ['sh', '-c', `printf '%s\\n' "$@" | cpio -o -H newc > "$1"`, 'sh', dest, ...sources];
+    else if (format === 'cpio') argv = ['sh', '-c', `dest="$1"; shift; printf '%s\\n' "$@" | cpio -o -H newc > "$dest"`, 'sh', dest, ...sources];
     else if (format === 'squashfs') argv = ['mksquashfs', ...sources, dest, '-noappend'];
     else throw new SezuError('invalid_request', `unsupported archive format: ${format}`);
     const response = await call(this, 'sezu.exec', target, { argv, cwd: args.cwd || '/', timeout_ms: args.timeout_ms });
