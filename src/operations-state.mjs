@@ -16,6 +16,40 @@ const TRANSFERS = path.join(ROOTS.storage, 'transfers');
 const BROWSER_SESSIONS = path.join(ROOTS.browser, '.sessions');
 const BASE_PACKS = new Set(['sezu-core', 'data-core', 'document-core', 'wasm-core', 'network-core', 'machine-image-core', 'cross-build-core']);
 
+
+export function pythonPackInstallScript() {
+  return `set -euo pipefail
+root=$1
+package=$2
+version=$3
+stage=$(mktemp -d /tmp/sezu-python-pack.XXXXXX)
+trap 'rm -rf "$stage"' EXIT
+python3 - "$stage" <<'PY'
+import json
+import pathlib
+import sys
+
+stage = pathlib.Path(sys.argv[1])
+artifact_root = pathlib.Path('/cache/sezu/sources/python/artifacts').resolve()
+index = json.loads(pathlib.Path('/cache/sezu/sources/python/locked-index.json').read_text(encoding='utf-8'))
+for item in index:
+    filename = item.get('filename')
+    if not filename or pathlib.Path(filename).name != filename:
+        raise SystemExit(f'invalid locked Python filename: {filename!r}')
+    source = pathlib.Path(item['cache_path']).resolve()
+    if source.parent != artifact_root or not source.is_file():
+        continue
+    destination = stage / filename
+    if destination.is_symlink() or destination.exists():
+        if destination.resolve() != source:
+            raise SystemExit(f'conflicting locked Python filename: {filename}')
+        continue
+    destination.symlink_to(source)
+PY
+python3 -m venv "$root"
+"$root/bin/pip" install --no-index --find-links "$stage" "$package==$version"`;
+}
+
 async function call(runtime, operation, target, args) {
   const response = await runtime.dispatch({ operation, target, args, request_id: uuid() });
   if (!response.ok) throw new SezuError(response.error?.code || 'operation_failed', response.error?.message || `${operation} failed`, response.error?.details);
@@ -417,7 +451,7 @@ export function registerStateOperations(runtime) {
           installed.push(component);
         } else if (component.ecosystem === 'python') {
           const root = args.install_root || `/opt/sezu/packs/${id}/venv`;
-          await call(this, 'sezu.exec', target, { argv: ['/bin/bash', '-lc', `python3 -m venv "$1"; "$1/bin/pip" install --no-index --find-links /cache/sezu/sources/python/artifacts "$2==$3"`, 'bash', root, component.component, String(component.version)], timeout_ms: args.timeout_ms });
+          await call(this, 'sezu.exec', target, { argv: ['/bin/bash', '-lc', pythonPackInstallScript(), 'bash', root, component.component, String(component.version)], timeout_ms: args.timeout_ms });
           installed.push(component);
         } else throw new SezuError('pack_ecosystem_unsupported', `locked ecosystem is not installable by this release: ${component.ecosystem}`, { component });
       }

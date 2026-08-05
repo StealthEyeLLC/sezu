@@ -1,9 +1,13 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import fs from "node:fs";
+import { pythonPackInstallScript } from "../../src/operations-state.mjs";
 
-test("on-demand Python packs install from the locked artifact directory", () => {
-  const source = fs.readFileSync(new URL("../../src/operations-state.mjs", import.meta.url), "utf8");
-  assert.match(source, /--no-index --find-links \/cache\/sezu\/sources\/python\/artifacts/);
-  assert.doesNotMatch(source, /--find-links \/cache\/sezu\/sources\/python "\$2==\$3"/);
+test("on-demand Python packs stage locked artifacts by canonical filename", () => {
+  const script = pythonPackInstallScript();
+  assert.match(script, /locked-index\.json/);
+  assert.match(script, /item\.get\('filename'\)/);
+  assert.match(script, /destination\.symlink_to\(source\)/);
+  assert.match(script, /--no-index --find-links "\$stage"/);
+  assert.match(script, /python3 -m venv "\$root"/);
+  assert.doesNotMatch(script, /--find-links \/cache\/sezu\/sources\/python\/artifacts/);
 });
