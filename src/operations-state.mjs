@@ -393,7 +393,7 @@ export function registerStateOperations(runtime) {
           installed.push(component);
         } else if (component.ecosystem === 'python') {
           const root = args.install_root || `/opt/sezu/packs/${id}/venv`;
-          await call(this, 'sezu.exec', target, { argv: ['/bin/bash', '-lc', `python3 -m venv "$1"; "$1/bin/pip" install --no-index --find-links /cache/sezu/sources/python "$2==$3"`, 'bash', root, component.component, String(component.version)], timeout_ms: args.timeout_ms });
+          await call(this, 'sezu.exec', target, { argv: ['/bin/bash', '-lc', `python3 -m venv "$1"; "$1/bin/pip" install --no-index --find-links /cache/sezu/sources/python/artifacts "$2==$3"`, 'bash', root, component.component, String(component.version)], timeout_ms: args.timeout_ms });
           installed.push(component);
         } else throw new SezuError('pack_ecosystem_unsupported', `locked ecosystem is not installable by this release: ${component.ecosystem}`, { component });
       }
