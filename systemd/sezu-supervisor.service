@@ -10,6 +10,7 @@ Group=sezu
 Environment=PATH=/opt/sezu/toolchains/node/24.19.0/bin:/opt/incus/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
 RuntimeDirectory=sezu
 RuntimeDirectoryMode=0770
+RuntimeDirectoryPreserve=yes
 ExecStart=/opt/sezu/toolchains/node/24.19.0/bin/node /opt/sezu/current/src/supervisor.mjs
 Restart=on-failure
 RestartSec=1s
