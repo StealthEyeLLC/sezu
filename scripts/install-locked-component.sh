@@ -118,6 +118,7 @@ fi
 executable=$component
 case "$component" in
   radare2) executable=radare2 ;;
+  aws-cli) executable=aws ;;
   aws-session-manager-plugin) executable=session-manager-plugin ;;
   azure-cli) executable=az ;;
   gitlab-cli) executable=glab ;;
