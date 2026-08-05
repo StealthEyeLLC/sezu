@@ -17,6 +17,12 @@ for _ in $(seq 1 100); do [ -S /run/sezu/supervisor.sock ] && break; sleep .1; d
 [ "$(stat -c '%U:%G:%a' /run/sezu/supervisor.sock)" = root:sezu:660 ] || fail supervisor-socket
 pass supervisor
 
+default_lanes=$(sezu sezu.terminal.list --json)
+for lane in u:main u:build u:debug host:main; do
+  jq -e --arg lane "$lane" '.result.terminals | any(.name==$lane and .alive==true)' <<<"$default_lanes" >/dev/null || fail "default-terminal-$lane"
+done
+pass default-terminals
+
 version=$(sezu sezu.version --json)
 [ "$(jq -r .protocol <<<"$version")" = SEZU1/1.0.0 ] || fail protocol
 [ "$(jq -r .result.version <<<"$version")" = 0.1.0 ] || fail version

@@ -76,9 +76,17 @@ for i in $(seq 1 100); do [ -S /run/sezu/supervisor.sock ] && break; sleep 0.1; 
 [ "$(stat -c '%U:%G:%a' /run/sezu/supervisor.sock)" = root:sezu:660 ]
 for spec in 'u:main u' 'u:build u' 'u:debug u' 'host:main host'; do
   set -- $spec
-  /usr/local/bin/sezu sezu.terminal.create --target "$2" --args-json "{\"name\":\"$1\"}" --json >/tmp/sezu-terminal-create.json || {
+  name=$1
+  target=$2
+  if ! /usr/local/bin/sezu sezu.terminal.create --target "$target" --args-json "{\"name\":\"$name\"}" --json >/tmp/sezu-terminal-create.json; then
     grep -q 'terminal_exists' /tmp/sezu-terminal-create.json || { cat /tmp/sezu-terminal-create.json >&2; exit 1; }
-  }
+    if ! /usr/local/bin/sezu sezu.terminal.open --args-json "{\"name\":\"$name\"}" --json >/tmp/sezu-terminal-open.json; then
+      grep -q 'terminal_not_running' /tmp/sezu-terminal-open.json || { cat /tmp/sezu-terminal-open.json >&2; exit 1; }
+      /usr/local/bin/sezu sezu.terminal.delete --args-json "{\"name\":\"$name\"}" --json >/dev/null
+      /usr/local/bin/sezu sezu.terminal.create --target "$target" --args-json "{\"name\":\"$name\"}" --json >/dev/null
+    fi
+  fi
 done
+rm -f /tmp/sezu-terminal-create.json /tmp/sezu-terminal-open.json
 /usr/local/bin/sezu --version
 /usr/local/bin/sezu sezu.version --json
