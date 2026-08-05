@@ -48,3 +48,20 @@ The direct installed-state check is:
 ```bash
 /opt/sezu/current/scripts/phase4-sezu-check.sh
 ```
+
+## Outbound tunnel
+
+Phase 5 keeps credentials outside the repository and activates the existing
+outbound-only service. Generate the production YAML from the real tunnel ID
+and a securely created runtime-key file, then run the direct local check:
+
+```bash
+sudo scripts/phase5-tunnel-apply.sh \
+  --tunnel-id tunnel_0123456789abcdef0123456789abcdef \
+  --runtime-key-file /secure/path/sezu-runtime-key
+sudo scripts/phase5-tunnel-check.sh
+```
+
+The service uses `/run/sezu/tunnel-health.sock`, launches the installed stdio
+gateway on channel `sezu`, and exposes only `call_sezu`. The repository example
+at `config/tunnel/tunnel-client.example.yaml` contains no credential.

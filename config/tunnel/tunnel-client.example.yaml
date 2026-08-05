@@ -1,0 +1,10 @@
+config_version: 1
+control_plane:
+  base_url: "https://api.openai.com"
+  tunnel_id: "tunnel_00000000000000000000000000000000"
+  api_key: "file:/etc/sezu/credentials/control-plane-api-key"
+admin_ui:
+  open_browser: false
+log:
+  level: info
+  format: json

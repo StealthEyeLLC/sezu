@@ -16,10 +16,10 @@ async function copy(relative, destination = relative) {
 }
 for (const item of [
   'src', 'config/operations', 'config/protocol', 'config/skill.schema.json',
-  'config/workspace.schema.json', 'config/macro.schema.json', 'config/capabilities.yaml',
+  'config/workspace.schema.json', 'config/macro.schema.json', 'config/capabilities.yaml', 'config/tunnel',
   'docs/OPERATION_CATALOG.md', 'docs/CAPABILITY_PACKS.md', 'locks', 'skills', 'templates',
   'systemd/sezu-supervisor.service', 'systemd/sezu-tunnel.service',
-  'scripts/install-locked-component.sh', 'scripts/mcp-smoke.mjs', 'scripts/run-tunnel.sh', 'scripts/check-source.mjs', 'scripts/phase4-sezu-check.sh', 'test', 'package.json', 'package-lock.json'
+  'scripts/install-locked-component.sh', 'scripts/mcp-smoke.mjs', 'scripts/run-tunnel.sh', 'scripts/check-source.mjs', 'scripts/phase4-sezu-check.sh', 'scripts/phase5-tunnel-apply.sh', 'scripts/phase5-tunnel-check.sh', 'test', 'package.json', 'package-lock.json'
 ]) await copy(item);
 if (!await fsp.stat(path.join(ROOT, 'node_modules')).catch(() => null)) throw new Error('node_modules is missing; run locked npm install in the forge');
 const cp = spawnSync('cp', ['-aL', path.join(ROOT, 'node_modules'), path.join(OUT, 'node_modules')], { stdio: 'inherit' });
@@ -38,7 +38,7 @@ const version = {
   playwright: JSON.parse(await fsp.readFile(path.join(OUT, 'node_modules/playwright/package.json'), 'utf8')).version
 };
 await fsp.writeFile(path.join(OUT, 'version.json'), JSON.stringify(version, null, 2) + '\n');
-for (const file of ['src/supervisor.mjs','src/gateway.mjs','src/cli.mjs','src/job-runner.mjs','src/browser-worker.mjs','scripts/install-locked-component.sh','scripts/mcp-smoke.mjs','scripts/run-tunnel.sh','scripts/check-source.mjs','scripts/phase4-sezu-check.sh']) {
+for (const file of ['src/supervisor.mjs','src/gateway.mjs','src/cli.mjs','src/job-runner.mjs','src/browser-worker.mjs','scripts/install-locked-component.sh','scripts/mcp-smoke.mjs','scripts/run-tunnel.sh','scripts/check-source.mjs','scripts/phase4-sezu-check.sh','scripts/phase5-tunnel-apply.sh','scripts/phase5-tunnel-check.sh']) {
   await fsp.chmod(path.join(OUT, file), 0o755);
 }
 console.log(JSON.stringify({ ok: true, release: OUT, ...version }));
