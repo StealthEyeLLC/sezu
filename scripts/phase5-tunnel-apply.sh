@@ -6,6 +6,7 @@ config_path=$credential_dir/tunnel-client.yaml
 key_path=$credential_dir/control-plane-api-key
 client=/opt/sezu/toolchains/tunnel-client/0.0.10/tunnel-client
 health_socket=/run/sezu/tunnel-health.sock
+doctor_socket=/run/sezu/tunnel-doctor-$$.sock
 node=/opt/sezu/toolchains/node/24.19.0/bin/node
 gateway=/opt/sezu/current/src/gateway.mjs
 mcp_command="command=$node $gateway,channel=main"
@@ -54,6 +55,7 @@ tmp_doctor=
 cleanup() {
   [ -z "$tmp_config" ] || rm -f "$tmp_config"
   [ -z "$tmp_doctor" ] || rm -f "$tmp_doctor"
+  rm -f "$doctor_socket"
 }
 trap cleanup EXIT HUP INT TERM
 
@@ -143,12 +145,13 @@ runuser -u sezu-tunnel -- "$node" /opt/sezu/current/scripts/mcp-smoke.mjs >/dev/
 tmp_doctor=$(mktemp /tmp/sezu-tunnel-doctor.XXXXXX.json)
 runuser -u sezu-tunnel -- "$client" doctor \
   --config "$config_path" \
-  --health.unix-socket "$health_socket" \
+  --health.unix-socket "$doctor_socket" \
   --mcp.command "$mcp_command" \
   --json > "$tmp_doctor"
 
 systemctl daemon-reload
-systemctl enable --now sezu-tunnel.service >/dev/null
+systemctl enable sezu-tunnel.service >/dev/null
+systemctl restart sezu-tunnel.service
 for _ in $(seq 1 300); do
   systemctl is-active --quiet sezu-tunnel.service && [ -S "$health_socket" ] && break
   sleep .2
