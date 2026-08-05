@@ -50,9 +50,8 @@ export class Runtime {
     return this;
   }
 
-  async resolveTarget(request) {
+  async resolveTarget(request, active = null) {
     if (request.target !== undefined && request.target !== null) return this.validateTarget(request.target);
-    const active = await readJson(ACTIVE_WORKSPACE, null);
     if (active?.default_target) return this.validateTarget(active.default_target);
     const config = await readJson(CONFIG_PATH, { default_target: 'u' });
     return this.validateTarget(config.default_target || 'u');
@@ -62,6 +61,25 @@ export class Runtime {
     if (target === 'host' || target === 'u') return target;
     if (typeof target === 'string' && /^cell:[A-Za-z0-9][A-Za-z0-9._-]{0,127}$/.test(target)) return target;
     throw new SezuError('invalid_target', `target must be host, u, or cell:<name>; got ${String(target)}`);
+  }
+
+  applyWorkspaceDefaults(request, active) {
+    if (!active) return request;
+    const args = { ...(request.args || {}) };
+    const executionOps = new Set(['sezu.exec', 'sezu.job.start']);
+    if (executionOps.has(request.operation)) {
+      if (args.cwd === undefined && active.path) args.cwd = active.path;
+      const workspaceEnv = active.environment && typeof active.environment === 'object' ? active.environment : {};
+      const explicitEnv = args.env && typeof args.env === 'object' ? args.env : {};
+      if (Object.keys(workspaceEnv).length || Object.keys(explicitEnv).length) args.env = { ...workspaceEnv, ...explicitEnv };
+      const explicitKeys = new Set(Object.keys(explicitEnv));
+      const removals = [...(active.environment_remove || []), ...(args.env_remove || [])].map(String);
+      if (removals.length) args.env_remove = [...new Set(removals)].filter(name => !explicitKeys.has(name));
+    }
+    if (request.operation === 'sezu.terminal.create' && args.cwd === undefined && active.path) args.cwd = active.path;
+    if (request.operation.startsWith('sezu.browser.') && request.operation !== 'sezu.browser.profile.create' && request.operation !== 'sezu.browser.profile.import' && request.operation !== 'sezu.browser.profile.delete' && request.operation !== 'sezu.browser.profile.list' && !args.name && active.browser_profile) args.name = active.browser_profile;
+    if (request.operation === 'sezu.template.launch' && !args.name && active.task_template) args.name = active.task_template;
+    return { ...request, args };
   }
 
   validateRequest(request) {
@@ -80,7 +98,9 @@ export class Runtime {
     let target = input?.target || 'u';
     try {
       request = this.validateRequest(input);
-      target = await this.resolveTarget(request);
+      const activeWorkspace = await readJson(ACTIVE_WORKSPACE, null);
+      target = await this.resolveTarget(request, activeWorkspace);
+      request = this.applyWorkspaceDefaults(request, activeWorkspace);
       request.request_id ||= cryptoRandomId();
       const handler = this.handlers.get(request.operation);
       const idempotency = request.idempotency_key ? await this.readIdempotency(request, target) : null;

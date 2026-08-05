@@ -12,6 +12,8 @@
     "skills": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
     "packs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
     "environment": {"type": "object", "additionalProperties": {"type": "string"}},
+    "environment_remove": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+    "persistent_paths": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
     "task_template": {"type": "string"},
     "macros": {"type": "array", "items": {"type": "string"}, "uniqueItems": true}
   }
