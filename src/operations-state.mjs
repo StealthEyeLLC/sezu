@@ -217,6 +217,30 @@ async function packRecord(target, packId) {
   const targetKey = target.replace(/[:/]/g, '_'); return path.join(ROOTS.packs, targetKey, `${packId}.json`);
 }
 
+export function packStateMatchesTarget(state, target, currentIdentity) {
+  if (!state) return false;
+  if (!String(target).startsWith('cell:')) return true;
+  return Boolean(currentIdentity && state.target_identity && state.target_identity === currentIdentity);
+}
+
+async function packTargetIdentity(target) {
+  if (!String(target).startsWith('cell:')) return null;
+  const instance = targetInstance(target);
+  if (!instance) return null;
+  try {
+    const result = await runIncusCli(['config', 'get', instance, 'volatile.uuid', '--project', PROJECT]);
+    return result.stdout.toString('utf8').trim() || null;
+  } catch {
+    return null;
+  }
+}
+
+async function packStateForTarget(target, packId, targetIdentity = undefined) {
+  const state = await readJson(await packRecord(target, packId), null);
+  const identity = targetIdentity === undefined ? await packTargetIdentity(target) : targetIdentity;
+  return packStateMatchesTarget(state, target, identity) ? state : null;
+}
+
 async function instanceIPv4(name) {
   const result = await runIncusCli(['list', name, '--project', PROJECT, '--format', 'json']);
   const items = JSON.parse(result.stdout.toString('utf8'));
@@ -318,8 +342,8 @@ export function registerStateOperations(runtime) {
   runtime.register('sezu.macro.inspect', async args => { const macro = (await listMacros()).find(x => x.name === required(args, 'name', 'string')); if (!macro) throw new SezuError('macro_not_found', `macro not found: ${args.name}`); return { result: macro }; }, { mutating: false, family: 'macro' });
   runtime.register('sezu.macro.run', async function (args, defaultTarget) { const macro = args.macro || (await listMacros()).find(x => x.name === required(args, 'name', 'string')); if (!macro) throw new SezuError('macro_not_found', `macro not found: ${args.name}`); const context = { inputs: args.inputs || {}, steps: [] }; const executeStep = async (step, index) => { const rendered = interpolate(step, context); const targets = rendered.targets || [rendered.target || defaultTarget]; const responses = await Promise.all(targets.map(t => this.dispatch({ operation: rendered.operation, target: t, args: rendered.args || {}, request_id: uuid() }))); const response = responses.length === 1 ? responses[0] : responses; context.steps[index] = { response, result: responses.length === 1 ? response.result : responses.map(x => x.result) }; return { index, responses }; }; let results = []; if ((macro.mode || 'sequential') === 'parallel') results = await Promise.all(macro.steps.map(executeStep)); else { const pending = new Map(macro.steps.map((s, i) => [i, s])); while (pending.size) { const ready = [...pending].filter(([i, s]) => (s.depends_on || []).every(d => context.steps[d])); if (!ready.length) throw new SezuError('dependency_deadlock', 'macro dependencies cannot be satisfied'); const batch = macro.mode === 'dependency' ? await Promise.all(ready.map(([i, s]) => executeStep(s, i))) : [await executeStep(ready[0][1], ready[0][0])]; results.push(...batch); for (const r of batch) pending.delete(r.index); } } results.sort((a, b) => a.index - b.index); const ok = results.every(r => r.responses.every(x => x.ok)); return { ok, status: ok ? 'completed' : 'failed', result: { name: macro.name, results, context } }; }, { family: 'macro' });
 
-  runtime.register('sezu.pack.list', async (args, target) => { const lock = await loadPackLock(); const packs = []; for (const pack of lock.packs) { const state = await readJson(await packRecord(target, pack.pack_id), null); packs.push({ ...pack, status: BASE_PACKS.has(pack.pack_id) && target === 'u' ? 'built-in' : (state?.state || 'not-installed'), installed_state: state }); } return { result: { target, packs, count: packs.length } }; }, { mutating: false, family: 'pack' });
-  runtime.register('sezu.pack.status', async (args, target) => { const id = required(args, 'pack_id', 'string'); const lock = await loadPackLock(); const pack = lock.packs.find(x => x.pack_id === id); if (!pack) throw new SezuError('pack_not_found', `pack not found: ${id}`); const state = await readJson(await packRecord(target, id), null); return { result: { ...pack, target, status: BASE_PACKS.has(id) && target === 'u' ? 'built-in' : (state?.state || 'not-installed'), installed_state: state } }; }, { mutating: false, family: 'pack' });
+  runtime.register('sezu.pack.list', async (args, target) => { const lock = await loadPackLock(); const targetIdentity = await packTargetIdentity(target); const packs = []; for (const pack of lock.packs) { const state = await packStateForTarget(target, pack.pack_id, targetIdentity); packs.push({ ...pack, status: BASE_PACKS.has(pack.pack_id) && target === 'u' ? 'built-in' : (state?.state || 'not-installed'), installed_state: state }); } return { result: { target, packs, count: packs.length } }; }, { mutating: false, family: 'pack' });
+  runtime.register('sezu.pack.status', async (args, target) => { const id = required(args, 'pack_id', 'string'); const lock = await loadPackLock(); const pack = lock.packs.find(x => x.pack_id === id); if (!pack) throw new SezuError('pack_not_found', `pack not found: ${id}`); const state = await packStateForTarget(target, id); return { result: { ...pack, target, status: BASE_PACKS.has(id) && target === 'u' ? 'built-in' : (state?.state || 'not-installed'), installed_state: state } }; }, { mutating: false, family: 'pack' });
   runtime.register('sezu.pack.install', async function (args, target) {
     const id = required(args, 'pack_id', 'string');
     const lock = await loadPackLock();
@@ -397,7 +421,9 @@ export function registerStateOperations(runtime) {
           installed.push(component);
         } else throw new SezuError('pack_ecosystem_unsupported', `locked ecosystem is not installable by this release: ${component.ecosystem}`, { component });
       }
-      const state = { pack_id: id, target, state: 'installed', installed_at: now(), components: installed, installed_packages: installedPackages };
+      const targetIdentity = await packTargetIdentity(target);
+      if (String(target).startsWith('cell:') && !targetIdentity) throw new SezuError('target_unreachable', `cannot identify target instance for pack state: ${target}`);
+      const state = { pack_id: id, target, target_identity: targetIdentity, state: 'installed', installed_at: now(), components: installed, installed_packages: installedPackages };
       const file = await packRecord(target, id); await ensureDir(path.dirname(file)); await atomicJson(file, state);
       return { result: state };
     } finally {
@@ -410,8 +436,9 @@ export function registerStateOperations(runtime) {
     const id = required(args, 'pack_id', 'string');
     if (BASE_PACKS.has(id) && target === 'u') throw new SezuError('immutable_builtin', 'base packs in the golden image are immutable');
     const file = await packRecord(target, id);
-    const state = await readJson(file, null);
-    if (!state) return { result: { pack_id: id, target, state: 'not-installed' } };
+    const recordedState = await readJson(file, null);
+    const state = packStateMatchesTarget(recordedState, target, await packTargetIdentity(target)) ? recordedState : null;
+    if (!state) { if (recordedState) await fsp.rm(file, { force: true }); return { result: { pack_id: id, target, state: 'not-installed', stale_record_removed: Boolean(recordedState) } }; }
     const all = await this.handlers.get('sezu.pack.list').call(this, {}, target, { operation: 'sezu.pack.list' });
     const otherStates = (all.result.packs || []).filter(pack => pack.pack_id !== id && pack.status === 'installed').map(pack => pack.installed_state).filter(Boolean);
     const sharedPackages = new Set(otherStates.flatMap(record => record.installed_packages || []));
