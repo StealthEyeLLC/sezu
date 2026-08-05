@@ -21,6 +21,7 @@ case "$artifact" in
   *.tar.gz|*.tgz) tar -xzf "$artifact" -C "$stage" ;;
   *.tar.xz) tar -xJf "$artifact" -C "$stage" ;;
   *.tar.zst) tar --zstd -xf "$artifact" -C "$stage" ;;
+  *.deb) dpkg-deb -x "$artifact" "$stage" ;;
   *) install -m 0755 "$artifact" "$stage/$component" ;;
 esac
 shopt -s dotglob nullglob
