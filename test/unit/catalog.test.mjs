@@ -23,6 +23,7 @@ test('workspace defaults merge execution context and preserve explicit overrides
   assert.deepEqual(exec.args.env, { FROM_WORKSPACE: 'yes', OVERRIDE: 'call', EXPLICIT: 'restored' });
   assert.deepEqual(exec.args.env_remove, ['REMOVE_ME', 'CALL_REMOVE']);
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.browser.open', args: {} }, active).args.profile, 'workspace-browser');
+  assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.browser.open', args: { session_id: 'named-session' } }, active).args.profile, 'workspace-browser');
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.browser.run', args: {} }, active).args.profile, 'workspace-browser');
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.template.launch', args: {} }, active).args.name, 'task-default');
   assert.equal(runtime.applyWorkspaceDefaults({ operation: 'sezu.terminal.create', args: {} }, active).args.cwd, '/work/demo');

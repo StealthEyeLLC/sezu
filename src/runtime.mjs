@@ -77,7 +77,8 @@ export class Runtime {
       if (removals.length) args.env_remove = [...new Set(removals)].filter(name => !explicitKeys.has(name));
     }
     if (request.operation === 'sezu.terminal.create' && args.cwd === undefined && active.path) args.cwd = active.path;
-    if ((request.operation === 'sezu.browser.open' || request.operation === 'sezu.browser.run') && !args.profile && !args.session_id && active.browser_profile) args.profile = active.browser_profile;
+    if (request.operation === 'sezu.browser.open' && !args.profile && active.browser_profile) args.profile = active.browser_profile;
+    if (request.operation === 'sezu.browser.run' && !args.profile && !args.session_id && active.browser_profile) args.profile = active.browser_profile;
     if (request.operation === 'sezu.template.launch' && !args.name && active.task_template) args.name = active.task_template;
     return { ...request, args };
   }
