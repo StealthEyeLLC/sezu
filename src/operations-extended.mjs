@@ -46,6 +46,15 @@ async function getTemplate(id) {
   const found = (await templateCatalog()).find(x => x.template_id === id); if (!found) throw new SezuError('template_not_found', `template not found: ${id}`); return found;
 }
 
+export function serviceDockerRunArguments({ reference, environment = {}, volumes = [], ports = [], command = [], dockerArgs = [], containerName = 'sezu-service' }) {
+  const argv = ['docker', 'run', '--detach', '--name', containerName, '--restart', 'unless-stopped'];
+  for (const [name, value] of Object.entries(environment)) argv.push('--env', `${name}=${value}`);
+  for (const port of ports) argv.push('--publish', `${port}:${port}`);
+  for (const volume of volumes) if (volume?.path) argv.push('--volume', `${volume.path}:${volume.path}`);
+  argv.push(...dockerArgs.map(String), reference, ...command.map(String));
+  return argv;
+}
+
 function timerPaths(name) {
   safeName(name, 'timer name'); const stem = `sezu-timer-${name}`;
   return { stem, service: path.join(SYSTEMD, `${stem}.service`), timer: path.join(SYSTEMD, `${stem}.timer`), request: path.join(ROOTS.timers, `${name}.request.json`), metadata: path.join(ROOTS.timers, `${name}.json`) };
@@ -89,17 +98,33 @@ export function registerExtendedOperations(runtime) {
     } else if (template.kind === 'service') {
       const reference = args.image || template.image?.reference || template.image_reference || template.immutable_reference || template.source?.reference;
       if (!reference) throw new SezuError('configuration_required', 'service template has no immutable image reference and no image override was supplied');
+      if (!String(reference).includes('@sha256:')) throw new SezuError('configuration_required', 'service image reference must include an immutable sha256 digest');
       const envNames = template.required_environment || template.environment_names || template.environment?.required || [];
       const env = asObject(args.environment || args.env || {}, 'environment'); const missing = envNames.filter(k => !(k in env)); if (missing.length) throw new SezuError('configuration_required', `missing required service environment values: ${missing.join(', ')}`);
-      const config = { ...(template.config || {}), ...(args.config || {}) }; if (Object.keys(env).length) config['user.environment'] = Object.entries(env).map(([k, v]) => `${k}=${v}`).join('\n');
-      createArgs = { name, project, type: template.instance_type || 'container', source: args.source || { type: 'image', alias: reference, protocol: template.image?.protocol }, profiles: args.profiles || template.profiles || [], config, devices: { ...(template.devices || {}), ...(args.devices || {}) }, start: args.start !== false };
+      createArgs = { name, project, type: template.instance_type || 'container', source: args.source || { type: 'image', alias: args.base_image || 'sezu-u-golden-0.1.0' }, profiles: args.profiles || template.profiles || ['sezu-u-power'], config: { ...(template.config || {}), ...(args.config || {}) }, devices: { ...(template.devices || {}), ...(args.devices || {}) }, start: false };
     } else if (template.kind === 'vm') {
       const source = args.source || template.source; if (!source?.reference && !source?.alias && !source?.fingerprint) throw new SezuError('configuration_required', 'VM template launch requires an exact image or disk source');
       createArgs = { name, project, type: 'virtual-machine', source: source.type ? source : { type: 'image', alias: source.reference || source.alias || source.fingerprint }, profiles: args.profiles || template.profiles || [], config: { ...(template.config || {}), ...(args.config || {}) }, devices: { ...(template.devices || {}), ...(args.devices || {}) }, start: args.start ?? template.start ?? false };
     } else throw new SezuError('invalid_template', `unsupported template kind: ${template.kind}`);
     const launched = await call(this, 'sezu.cell.create', defaultTarget, createArgs);
-    for (const volume of args.volumes || []) await call(this, 'sezu.volume.attach', defaultTarget, { project, instance: name, ...volume });
-    return { status: launched.status, handle: launched.handle, result: { template: template.template_id, instance: name, launched: launched.result, published_ports: [] } };
+    const volumes = args.volumes || [];
+    for (const volume of volumes) await call(this, 'sezu.volume.attach', defaultTarget, { project, instance: name, ...volume });
+    let service = null;
+    if (template.kind === 'service' && args.start !== false) {
+      await call(this, 'sezu.cell.start', defaultTarget, { project, name, timeout_ms: args.timeout_ms || 300000 });
+      const reference = args.image || template.image?.reference || template.image_reference || template.immutable_reference || template.source?.reference;
+      const environment = asObject(args.environment || args.env || {}, 'environment');
+      const containerName = safeName(args.container_name || 'sezu-service', 'service container name');
+      const command = args.command || template.command || [];
+      const ports = args.ports || template.ports || [];
+      const runArgv = serviceDockerRunArguments({ reference, environment, volumes, ports, command, dockerArgs: args.docker_args || [], containerName });
+      const target = `cell:${name}`;
+      await call(this, 'sezu.exec', target, { argv: ['/bin/bash', '-lc', 'for i in $(seq 1 240); do docker info >/dev/null 2>&1 && exit 0; sleep 0.25; done; exit 1'], cwd: '/', timeout_ms: args.timeout_ms || 300000 });
+      const pulled = await call(this, 'sezu.exec', target, { argv: ['docker', 'pull', reference], cwd: '/', timeout_ms: args.timeout_ms || 600000 });
+      const running = await call(this, 'sezu.exec', target, { argv: runArgv, cwd: '/', timeout_ms: args.timeout_ms || 300000 });
+      service = { reference, container_name: containerName, ports, pull: pulled.result, run: running.result };
+    }
+    return { status: launched.status, handle: launched.handle, result: { template: template.template_id, instance: name, launched: launched.result, service, published_ports: template.kind === 'service' ? (args.ports || template.ports || []) : [] } };
   }, { family: 'template' });
   runtime.register('sezu.template.delete-instance', async function (args, target) {
     const name = safeName(required(args, 'name', 'string'), 'instance name'); const project = args.project || 'sezu'; let devices = {};
