@@ -44,6 +44,16 @@ time.sleep(.5)
 page=call('sezu.terminal.read',{'name':name,'offset':0,'limit':65536,'encoding':'base64'})
 tout=base64.b64decode(data(page)['data'])
 assert b'TERM_OK' in tout,tout
+subprocess.run(['systemctl','restart','sezu-supervisor.service'],check=True)
+for _ in range(100):
+    if pathlib.Path('/run/sezu/supervisor.sock').exists(): break
+    time.sleep(.05)
+page_after_restart=call('sezu.terminal.read',{'name':name,'offset':0,'limit':65536,'encoding':'base64'})
+assert b'TERM_OK' in base64.b64decode(data(page_after_restart)['data'])
+call('sezu.terminal.write',{'name':name,'data':base64.b64encode(b'printf RECONNECTED_OK\n\n').decode(),'encoding':'base64'})
+time.sleep(.3)
+reconnected=call('sezu.terminal.read',{'name':name,'offset':0,'limit':65536,'encoding':'base64'})
+assert b'RECONNECTED_OK' in base64.b64decode(data(reconnected)['data'])
 call('sezu.terminal.resize',{'name':name,'cols':120,'rows':40}); call('sezu.terminal.interrupt',{'name':name}); call('sezu.terminal.close',{'name':name}); call('sezu.terminal.open',{'name':name}); call('sezu.terminal.delete',{'name':name})
 # files and direct transfer
 root='/tmp/sezu-phase4-tree'; subprocess.run(['rm','-rf',root],check=True); pathlib.Path(root+'/nested').mkdir(parents=True)

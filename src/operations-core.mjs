@@ -128,8 +128,16 @@ async function tmux(args, options = {}) {
   return { code: r.code, stdout, stderr };
 }
 
+function terminalTmuxArgs(metadata, args) {
+  return metadata.socket_label ? ['-L', metadata.socket_label, ...args] : args;
+}
+
+async function terminalTmux(metadata, args, options = {}) {
+  return await tmux(terminalTmuxArgs(metadata, args), options);
+}
+
 async function terminalAlive(metadata) {
-  return (await tmux(['has-session', '-t', metadata.session], { allowFailure: true })).code === 0;
+  return (await terminalTmux(metadata, ['has-session', '-t', metadata.session], { allowFailure: true })).code === 0;
 }
 
 async function pathCommand(target, argv) {
@@ -298,14 +306,21 @@ export function registerCoreOperations(runtime) {
   runtime.register('sezu.terminal.create', async (args, target) => {
     const name = safeName(required(args, 'name', 'string'), 'terminal name'); const p = terminalPaths(name);
     if (await exists(p.metadataPath)) throw new SezuError('terminal_exists', `terminal already exists: ${name}`);
-    const session = `${TERMINAL_PREFIX}${sha256(`${target}:${name}`).slice(0, 24)}`; const shell = args.shell || '/bin/bash'; const instance = targetInstance(target);
+    const identity = sha256(`${target}:${name}`).slice(0, 24);
+    const session = `${TERMINAL_PREFIX}${identity}`;
+    const socketLabel = `sezu-${identity}`;
+    const unit = `sezu-terminal-${identity}.service`;
+    const shell = args.shell || '/bin/bash'; const instance = targetInstance(target);
     const command = instance ? ['incus', 'exec', instance, '--project', args.project || PROJECT, '--', shell] : [shell];
     await fsp.writeFile(p.scrollback, Buffer.alloc(0), { mode: 0o640 });
     const create = ['new-session', '-d', '-s', session, '-x', String(args.cols || 120), '-y', String(args.rows || 40)];
     if (args.cwd) create.push('-c', String(args.cwd)); create.push(...command);
-    await tmux(create);
-    await tmux(['pipe-pane', '-t', `${session}:0.0`, '-o', `cat >> ${shellQuote(p.scrollback)}`]);
-    const metadata = { name, target, session, shell, cwd: args.cwd || null, workspace: args.workspace || null, created_at: now(), closed: false, scrollback: p.scrollback };
+    const launch = await runProcess(['systemd-run', '--unit', unit, '--property=Type=forking', '--collect', '--quiet', '--', 'tmux', '-L', socketLabel, ...create]);
+    const launchStdout = await fsp.readFile(launch.stdoutPath); const launchStderr = await fsp.readFile(launch.stderrPath);
+    await fsp.rm(launch.tempDir, { recursive: true, force: true });
+    if (launch.code !== 0 || launch.signal) throw new SezuError('terminal_failed', launchStderr.toString('utf8').trim() || `systemd-run exited ${launch.code}`, { stdout: launchStdout.toString('utf8'), exit_code: launch.code, signal: launch.signal });
+    const metadata = { name, target, session, socket_label: socketLabel, unit, shell, cwd: args.cwd || null, workspace: args.workspace || null, created_at: now(), closed: false, scrollback: p.scrollback };
+    await terminalTmux(metadata, ['pipe-pane', '-t', `${session}:0.0`, '-o', `cat >> ${shellQuote(p.scrollback)}`]);
     await atomicJson(p.metadataPath, metadata);
     return { status: 'running', handle: name, result: { ...metadata, alive: true } };
   }, { family: 'terminal' });
@@ -322,22 +337,28 @@ export function registerCoreOperations(runtime) {
   runtime.register('sezu.terminal.write', async args => {
     const t = await getTerminal(required(args, 'name', 'string')); if (!(await terminalAlive(t.record))) throw new SezuError('terminal_not_running', 'terminal session is not running');
     const data = decodeData(args); const temp = path.join(ROOTS.storage, `terminal-${uuid()}.input`); await fsp.writeFile(temp, data, { mode: 0o600 });
-    const buffer = `sezu-${uuid()}`; try { await tmux(['load-buffer', '-b', buffer, temp]); await tmux(['paste-buffer', '-b', buffer, '-t', `${t.record.session}:0.0`, '-d']); } finally { await fsp.rm(temp, { force: true }); }
+    const buffer = `sezu-${uuid()}`; try { await terminalTmux(t.record, ['load-buffer', '-b', buffer, temp]); await terminalTmux(t.record, ['paste-buffer', '-b', buffer, '-t', `${t.record.session}:0.0`, '-d']); } finally { await fsp.rm(temp, { force: true }); }
     return { status: 'running', handle: t.record.name, result: { bytes_written: data.length } };
   }, { family: 'terminal' });
   runtime.register('sezu.terminal.resize', async args => {
-    const t = await getTerminal(required(args, 'name', 'string')); await tmux(['resize-window', '-t', t.record.session, '-x', String(required(args, 'cols')), '-y', String(required(args, 'rows'))]);
+    const t = await getTerminal(required(args, 'name', 'string')); await terminalTmux(t.record, ['resize-window', '-t', t.record.session, '-x', String(required(args, 'cols')), '-y', String(required(args, 'rows'))]);
     return { status: 'running', handle: t.record.name, result: { cols: Number(args.cols), rows: Number(args.rows) } };
   }, { family: 'terminal' });
   runtime.register('sezu.terminal.interrupt', async args => {
-    const t = await getTerminal(required(args, 'name', 'string')); await tmux(['send-keys', '-t', `${t.record.session}:0.0`, 'C-c']); return { status: 'running', handle: t.record.name, result: { interrupted: true } };
+    const t = await getTerminal(required(args, 'name', 'string')); await terminalTmux(t.record, ['send-keys', '-t', `${t.record.session}:0.0`, 'C-c']); return { status: 'running', handle: t.record.name, result: { interrupted: true } };
   }, { family: 'terminal' });
   runtime.register('sezu.terminal.close', async args => {
     const t = await getTerminal(required(args, 'name', 'string')); t.record.closed = true; t.record.closed_at = now(); await atomicJson(terminalPaths(t.record.name).metadataPath, t.record);
-    await tmux(['detach-client', '-s', t.record.session], { allowFailure: true }); return { status: 'completed', handle: t.record.name, result: { closed: true, session_preserved: await terminalAlive(t.record) } };
+    await terminalTmux(t.record, ['detach-client', '-s', t.record.session], { allowFailure: true }); return { status: 'completed', handle: t.record.name, result: { closed: true, session_preserved: await terminalAlive(t.record) } };
   }, { family: 'terminal' });
   runtime.register('sezu.terminal.delete', async args => {
-    const t = await getTerminal(required(args, 'name', 'string')); await tmux(['kill-session', '-t', t.record.session], { allowFailure: true });
+    const t = await getTerminal(required(args, 'name', 'string'));
+    if (t.record.socket_label) await terminalTmux(t.record, ['kill-server'], { allowFailure: true });
+    else await terminalTmux(t.record, ['kill-session', '-t', t.record.session], { allowFailure: true });
+    if (t.record.unit) {
+      await runProcess(['systemctl', 'stop', t.record.unit]).then(async r => fsp.rm(r.tempDir, { recursive: true, force: true })).catch(() => {});
+      await runProcess(['systemctl', 'reset-failed', t.record.unit]).then(async r => fsp.rm(r.tempDir, { recursive: true, force: true })).catch(() => {});
+    }
     await fsp.rm(t.metadataPath || terminalPaths(t.record.name).metadataPath, { force: true }); await fsp.rm(t.scrollback, { force: true }); return { result: { deleted: t.record.name } };
   }, { family: 'terminal' });
 
